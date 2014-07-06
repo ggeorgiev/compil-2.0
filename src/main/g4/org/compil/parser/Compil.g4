@@ -4,27 +4,67 @@ document
 	:	structure*
 	;
 	
-comment
-	:   block_comment
-	|	line_block_comment
+objectComment
+	:	OBJECT_COMMENT
+	|	// always optional
 	;
 	
-block_comment
-	:   LINE_WS* BLOCK_COMMENT
-	;
-	
-line_block_comment
-	:	line_comment+
-	;     
-	
-line_comment
-	:	LINE_WS* LINE_COMMENT
-	;     
-
 structure
-	:	comment? KW_STRUCTURE LEFT_BRACE RIGHT_BRACE
+	:	objectComment 
+		KW_STRUCTURE STRUCTURE_NAME 
+		LEFT_BRACE 
+		RIGHT_BRACE
 	;
 	
+LEFT_BRACE:             '{';
+RIGHT_BRACE:            '}';
+
+KW_STRUCTURE:           'structure';
+
+STRUCTURE_NAME
+	: ID
+	;
+
+fragment
+ID
+    :   LETTER (LETTER|ID_DIGIT)*
+    ;
+    
+OBJECT_COMMENT
+	:   OBJECT_BLOCK_COMMENT
+	|	OBJECT_LINE_BLOCK_COMMENT
+	;    
+    
+OBJECT_BLOCK_COMMENT
+    :   LINE_WS* '/*' .*? '*/'
+    ;
+
+OBJECT_LINE_BLOCK_COMMENT
+	:	(LINE_WS*? OBJECT_LINE_COMMENT)+
+	;     
+    
+fragment
+OBJECT_LINE_COMMENT
+    :   '//' .*? ( EOL | EOF )
+    ;
+   
+SPACING
+	:	WS -> skip
+	;
+	
+COMMENT
+	:	'#' .*? ( EOL | EOF ) -> skip
+	;
+	
+WS
+    :   (LINE_WS | EOL)
+    ;
+    
+fragment	
+EOL
+	:	('\n' |	'\r\n')
+	;
+    
 fragment
 LETTER
     :   '_'
@@ -35,45 +75,11 @@ LETTER
 fragment
 ID_DIGIT
     :   '0'..'9'
-    ;    	
-
-LEFT_BRACE:             '{';
-RIGHT_BRACE:            '}';
-
-KW_STRUCTURE:           'structure';
-
-ID
-    :   LETTER (LETTER|ID_DIGIT)*
     ;
     
+fragment    
 LINE_WS
-    :   (' ' | '\t' | '\u000C' )
+    :   ' '
+    |	'\t'
+    |	'\u000C'
     ;
-    
-EOL
-	:	('\n' |	'\r\n')
-	;
-    
-WS
-    :   (LINE_WS | EOL)
-    ;
-    
-BLOCK_COMMENT
-    :   '/*' .*? '*/'
-    ;
-
-LINE_COMMENT
-    :   '//' .*? ( EOL | EOF )
-    ;
-    
-SPACING
-	:	WS -> channel(HIDDEN)
-	;
-	
-COMMENT
-	:	BLOCK_COMMENT -> channel(HIDDEN)
-	;
-	
-INLINE_COMMENT
-	:	LINE_COMMENT -> channel(HIDDEN)
-	;		

@@ -35,12 +35,12 @@ public class CompilCommentTest {
 		
 		for (String string : strings)
 		{
-			System.out.print("testing: <" + string + ">\n");
+			//System.out.print("testing: <" + string + ">\n");
 			
 			TokenStream stream = tokenStream(string);
 			CompilParser parser = new CompilParser(stream);
 			
-			ParseTree tree = parser.comment();
+			ParseTree tree = parser.objectComment();
 			
 			assertEquals(string, tree.getText());
 		}
