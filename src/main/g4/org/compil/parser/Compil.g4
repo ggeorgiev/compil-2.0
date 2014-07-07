@@ -24,7 +24,7 @@ KW_STRUCTURE:           'structure';
 STRUCTURE_NAME
 	: ID
 	;
-
+	
 fragment
 ID
     :   LETTER (LETTER|ID_DIGIT)*
