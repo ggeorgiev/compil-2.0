@@ -11,7 +11,7 @@ objectComment
 	
 structure
 	:	objectComment 
-		KW_STRUCTURE STRUCTURE_NAME 
+		KW_STRUCTURE IDENTIFIER 
 		LEFT_BRACE 
 		RIGHT_BRACE
 	;
@@ -21,12 +21,7 @@ RIGHT_BRACE:            '}';
 
 KW_STRUCTURE:           'structure';
 
-STRUCTURE_NAME
-	: ID
-	;
-	
-fragment
-ID
+IDENTIFIER
     :   LETTER (LETTER|ID_DIGIT)*
     ;
     

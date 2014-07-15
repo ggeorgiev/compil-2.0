@@ -1,27 +1,54 @@
 grammar Template;
 
-foreach
-	:	KW_FOREACH property 
-		LEFT_BRACE 
-		RIGHT_BRACE
+statement
+	:	compoundStatement
+	|	iterationStatement
+	|	selectionStatement
 	;
 	
+iterationStatement
+	:	foreach
+	;	
+
+foreach
+	:	KW_FOREACH property 
+		statement
+	;
+	
+selectionStatement
+	:	when
+	;
+
+when
+	:	KW_WHEN type
+		statement
+	;
+	
+blockStatementItemList
+    :   statement
+    |   blockStatementItemList statement
+    ;
+	
+compoundStatement
+    :   LEFT_BRACE blockStatementItemList? RIGHT_BRACE
+    ;	
+	
 property
-	:	DOT (PROPERTY_NAME | property)
-	;  	
+	:	DOT (IDENTIFIER | property)
+	;
+	
+type
+	:	IDENTIFIER
+	;	  	
 
 DOT:					'.';	
 LEFT_BRACE:             '{';
 RIGHT_BRACE:            '}';
 
 KW_FOREACH:             'foreach';
+KW_WHEN:				'when';
 
-PROPERTY_NAME
-	: ID
-	;
-
-fragment
-ID
+IDENTIFIER
     :   LETTER (LETTER|ID_DIGIT)*
     ;
     
