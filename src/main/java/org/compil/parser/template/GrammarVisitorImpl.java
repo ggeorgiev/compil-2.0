@@ -1,9 +1,9 @@
-package org.compil.parser;
+package org.compil.parser.template;
 
-public class TemplateVisitorImpl extends TemplateBaseVisitor<String> {
+public class GrammarVisitorImpl extends GrammarBaseVisitor<String> {
 
 	@Override 
-	public String visitCompoundStatement(TemplateParser.CompoundStatementContext ctx)
+	public String visitCompoundStatement(GrammarParser.CompoundStatementContext ctx)
 	{
 		String result = ctx.LEFT_BRACE().getText() + "\n";
 		if (ctx.blockStatementItemList() != null)
@@ -13,7 +13,7 @@ public class TemplateVisitorImpl extends TemplateBaseVisitor<String> {
 	}
 	
 	@Override 
-	public String visitWhen(TemplateParser.WhenContext ctx) 
+	public String visitWhen(GrammarParser.WhenContext ctx) 
 	{
 		String result = ctx.KW_WHEN() + " ";
 		result += visit(ctx.type()) + "\n";
@@ -22,7 +22,7 @@ public class TemplateVisitorImpl extends TemplateBaseVisitor<String> {
 	}
 	
 	@Override
-	public String visitForeach(TemplateParser.ForeachContext ctx)
+	public String visitForeach(GrammarParser.ForeachContext ctx)
 	{
 		String result = ctx.KW_FOREACH() + " ";
 		result += visit(ctx.property()) + "\n";
@@ -31,7 +31,7 @@ public class TemplateVisitorImpl extends TemplateBaseVisitor<String> {
 	}
 	
 	@Override 
-	public String visitProperty(TemplateParser.PropertyContext ctx) 
+	public String visitProperty(GrammarParser.PropertyContext ctx) 
 	{
 		String result = ctx.DOT().getText();
 		if (ctx.IDENTIFIER()  != null)
@@ -42,7 +42,7 @@ public class TemplateVisitorImpl extends TemplateBaseVisitor<String> {
 	}
 	
 	@Override 
-	public String visitType(TemplateParser.TypeContext ctx)
+	public String visitType(GrammarParser.TypeContext ctx)
 	{
 		return ctx.IDENTIFIER().getText();
 	}	

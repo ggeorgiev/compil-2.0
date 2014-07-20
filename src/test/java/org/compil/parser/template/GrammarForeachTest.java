@@ -1,4 +1,4 @@
-package org.compil.parser;
+package org.compil.parser.template;
 
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -7,15 +7,15 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.testng.annotations.*;
 
-public class TemplateWhenTest {
+public class GrammarForeachTest {
 
-	String whenDump(String input) {
+	String foreachDump(String input) {
 		ANTLRInputStream inputStream = new ANTLRInputStream(input);
-		TemplateLexer lexer = new TemplateLexer(inputStream);
+		GrammarLexer lexer = new GrammarLexer(inputStream);
 		CommonTokenStream stream = new CommonTokenStream(lexer);
-		TemplateParser parser = new TemplateParser(stream);
+		GrammarParser parser = new GrammarParser(stream);
 		ParseTree tree = parser.foreach();
-		TemplateVisitorImpl visitor = new TemplateVisitorImpl();
+		GrammarVisitorImpl visitor = new GrammarVisitorImpl();
 		return visitor.visit(tree);
 	}
 	
@@ -26,7 +26,7 @@ public class TemplateWhenTest {
 
 	@Test
 	public void sanityTest() {
-		String dump = whenDump("when structure {}");
-		assertEquals("when .blah\n{\n}\n", dump);
+		String dump = foreachDump("foreach .blah {}");
+		assertEquals("foreach .blah\n{\n}\n", dump);
 	}
 }

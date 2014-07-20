@@ -1,4 +1,4 @@
-grammar Template;
+grammar Grammar;
 
 statement
 	:	compoundStatement
