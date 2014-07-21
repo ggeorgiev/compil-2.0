@@ -29,6 +29,16 @@ public class StreamTest {
 		return visitor.visit(tree);
 	}
 
+	String serializeDump(String input) {
+		ANTLRInputStream inputStream = new ANTLRInputStream(input);
+		StreamLexer lexer = new StreamLexer(inputStream);
+		CommonTokenStream stream = new CommonTokenStream(lexer);
+		StreamParser parser = new StreamParser(stream);
+		ParseTree tree = parser.serialize();
+		StreamVisitorImpl visitor = new StreamVisitorImpl();
+		return visitor.visit(tree);
+	}
+
 	@BeforeClass
 	public void setUp() {
 		// code that will be invoked when this test is instantiated
@@ -37,9 +47,9 @@ public class StreamTest {
 	@Test
 	public void pathTest() {
 		String paths[] = {
-			"/",
-			"/foo/bar",
-			"foo",
+			"VAR/file.txt",
+			"VAR/foo/bar/file.txt",
+			"VAR/path/stream/file.txt",
 		};
 		
 		for (String path : paths) {
@@ -48,12 +58,22 @@ public class StreamTest {
 			assertEquals(path, dump);
 		}
 	}
-/*
+
 	@Test
-	public void sanityTest() {
-		String dump = streamDump("stream Foo path: bar ;");
-		//assertEquals("", dump);
+	public void streamTest() {
+		String dump = streamDump("stream foo { path: VAR/file.txt; }");
+		assertEquals("stream foo {\n    path: VAR/file.txt;\n}\n", dump);
 	}
-*/
 	
+	@Test
+	public void serializeEmptyBlockTest() {
+		String dump = serializeDump("foo:");
+		assertEquals("foo:", dump);
+	}
+
+	@Test
+	public void serializeBlockTest() {
+		String dump = serializeDump("foo:\n<bar");
+		assertEquals("foo:\n<bar", dump);
+	}
 }
