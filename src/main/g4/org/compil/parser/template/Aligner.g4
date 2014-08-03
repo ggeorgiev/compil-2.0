@@ -1,22 +1,55 @@
 grammar Aligner;
 
 line
+	:	emptyLine
+	|	codeLine
+	;
+	
+emptyLine
+	:	( KW_EMPTY KW_LINE )?
+		( EOL | EOF )
+	;
+
+codeLine
 	:	KW_LINE COLON
-		indent
-		.*?
+		indent COLON
+		code
 		( EOL | EOF )
 	;
 	
-indent
-	:	absolute_indent
-	|	relative_indent
+code
+	:	CODE*
 	;
 	
-absolute_indent
+indent
+	:	actionIndent
+	|	expressionIndent
+	;
+	
+actionIndent
+	: pushIndent
+	| popIndent
+	;
+	
+pushIndent
+	:	KW_PUSH
+		expressionIndent?
+	;
+
+popIndent
+	:	KW_POP
+	;
+	
+expressionIndent
+	:	absoluteIndent
+	|	relativeIndent
+	;
+	
+absoluteIndent
 	:	NUMBER
 	;
 	
-relative_indent
+relativeIndent
 	:	sign NUMBER
 	;
 	
@@ -29,18 +62,35 @@ COLON:					':';
 MINUS:					'-';
 PLUS:					'+';
 
+KW_EMPTY:				'empty';
 KW_LINE:				'line';
+KW_PUSH:				'push';
+KW_POP: 				'pop';
 
 NUMBER
-	:	ID_DIGIT+
+	:	DIGIT+
 	;
-    
-fragment
+
 EOL
-	:	('\n' |	'\r\n')
+	:	('\n' | '\r\n')
 	;
     
+SPACING
+	:	LINE_WS -> skip
+	;
+	
+CODE
+	:	(~('\n' | '\r'))
+	;
+
 fragment
-ID_DIGIT
+DIGIT
     :   '0'..'9'
+    ;
+
+fragment   
+LINE_WS
+    :   ' '
+    |	'\t'
+    |	'\u000C'
     ;

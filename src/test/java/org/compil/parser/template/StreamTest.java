@@ -53,7 +53,6 @@ public class StreamTest {
 		};
 		
 		for (String path : paths) {
-			System.out.print("parsing " + path + "\n");
 			String dump = pathDump(path);
 			assertEquals(path, dump);
 		}
