@@ -79,7 +79,7 @@
                 <artifactId>antlr4-maven-plugin</artifactId>
                 <version>4.0</version>
                 <configuration>
-                    <sourceDirectory>src/main/g4</sourceDirectory>
+                    <sourceDirectory>src/main/antlr4</sourceDirectory>
                 </configuration>
                 <executions>
                     <execution>
