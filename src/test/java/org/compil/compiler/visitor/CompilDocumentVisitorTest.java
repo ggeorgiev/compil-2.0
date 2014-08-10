@@ -3,25 +3,28 @@ package org.compil.compiler.visitor;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertNotNull;
 
+import java.util.List;
+
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.compil.compiler.model.Structure;
+import org.compil.compiler.model.CompilObject;
+import org.compil.compiler.model.Document;
 import org.compil.parser.CompilLexer;
 import org.compil.parser.CompilParser;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class CompilStructureVisitorTest {
-	Structure parseStructure(String input) {
+public class CompilDocumentVisitorTest {
+	Document parseDocument(String input) {
 		ANTLRInputStream inputStream = new ANTLRInputStream(input);
 		CompilLexer lexer = new CompilLexer(inputStream);
 		TokenStream stream = new CommonTokenStream(lexer);
 		CompilParser parser = new CompilParser(stream);
-		ParseTree tree = parser.structure();
+		ParseTree tree = parser.document();
 		
-		CompilStructureVisitor visitor = new CompilStructureVisitor();
+		CompilDocumentVisitor visitor = new CompilDocumentVisitor();
 		return visitor.visit(tree);
 	}
 
@@ -32,8 +35,10 @@ public class CompilStructureVisitorTest {
 
 	@Test
 	public void sanityTest() {
-		Structure structure = parseStructure("structure foo {}");
-		assertNotNull(structure);
-		assertEquals("foo", structure.getName());
+		Document document = parseDocument("structure foo {}");
+		assertNotNull(document);
+		
+		List<CompilObject> objects = document.getObjects();
+		assertEquals(1, objects.size());
 	}
 }
