@@ -4,6 +4,7 @@ statement
 	:	compoundStatement
 	|	iterationStatement
 	|	selectionStatement
+	|	codeStatement
 	;
 	
 iterationStatement
@@ -31,7 +32,13 @@ blockStatementItemList
 	
 compoundStatement
     :   LEFT_BRACE blockStatementItemList? RIGHT_BRACE
-    ;	
+    ;
+
+codeStatement
+	:	LEFT_CODE_BRACE
+		.*?
+		RIGHT_CODE_BRACE
+	;
 	
 property
 	:	DOT (IDENTIFIER | property)
@@ -39,11 +46,13 @@ property
 	
 type
 	:	IDENTIFIER
-	;	  	
-
+	;
+	
 DOT:					'.';	
 LEFT_BRACE:             '{';
 RIGHT_BRACE:            '}';
+LEFT_CODE_BRACE:        '<?';
+RIGHT_CODE_BRACE:       '?>';
 
 KW_FOREACH:             'foreach';
 KW_WHEN:				'when';

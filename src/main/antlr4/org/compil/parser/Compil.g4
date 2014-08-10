@@ -11,9 +11,13 @@ objectComment
 	
 structure
 	:	objectComment 
-		KW_STRUCTURE IDENTIFIER 
+		KW_STRUCTURE name 
 		LEFT_BRACE 
 		RIGHT_BRACE
+	;
+	
+name
+	:	IDENTIFIER
 	;
 	
 LEFT_BRACE:             '{';

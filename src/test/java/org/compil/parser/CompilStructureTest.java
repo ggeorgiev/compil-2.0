@@ -36,5 +36,4 @@ public class CompilStructureTest {
 		String dump = structureDump("// comment\n  structure sname{}");
 		assertEquals("structure sname\n{\n}\n", dump);
 	}
-	
 }

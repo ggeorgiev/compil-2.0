@@ -6,7 +6,7 @@ public class CompilVisitorImpl extends CompilBaseVisitor<String> {
 		
 		String result;
 		
-		result = ctx.KW_STRUCTURE() + " " + ctx.IDENTIFIER().getText() + "\n";
+		result = ctx.KW_STRUCTURE() + " " + ctx.name().getText() + "\n";
 		result += "{\n";
 		//result += visitChildren(ctx);
 		result += "}\n";
