@@ -10,6 +10,7 @@
     
     <modules>
         <module>annotation</module>
+        <module>grammar</module>
         <module>generator</module>
     </modules>
 

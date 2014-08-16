@@ -13,19 +13,19 @@
         <version>2.0.0-SNAPSHOT</version>
     </parent>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <antlr4.visitor>true</antlr4.visitor>
-        <antlr4.listener>true</antlr4.listener>
-    </properties>
-
     <dependencies>
 	    <dependency>
       		<groupId>org.compil</groupId>
        		<artifactId>annotation</artifactId>
        		<version>2.0.0-SNAPSHOT</version>
-            <scope>compile</scope>
 		</dependency>
+
+	    <dependency>
+      		<groupId>org.compil</groupId>
+       		<artifactId>grammar</artifactId>
+       		<version>2.0.0-SNAPSHOT</version>
+		</dependency>
+
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
@@ -68,41 +68,6 @@
             </plugin>
 
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.9</version>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>add-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>target/generated-sources/antlr4</source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.antlr</groupId>
-                <artifactId>antlr4-maven-plugin</artifactId>
-                <version>4.0</version>
-                <configuration>
-                    <sourceDirectory>src/main/antlr4</sourceDirectory>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>antlr4</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
 				<groupId>org.bsc.maven</groupId>
       			<artifactId>maven-processor-plugin</artifactId>
       			<version>2.2.4</version>
@@ -134,37 +99,5 @@
     		</plugin>
 
         </plugins>
-        <pluginManagement>
-            <plugins>
-                <!--This plugin's configuration is used to store Eclipse m2e settings 
-          only. It has no influence on the Maven build itself. -->
-                <plugin>
-                    <groupId>org.eclipse.m2e</groupId>
-                    <artifactId>lifecycle-mapping</artifactId>
-                    <version>1.0.0</version>
-                    <configuration>
-                        <lifecycleMappingMetadata>
-                            <pluginExecutions>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>org.antlr</groupId>
-                                        <artifactId>antlr4-maven-plugin</artifactId>
-                                        <versionRange>[4.0,)</versionRange>
-                                        <goals>
-                                            <goal>antlr4</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <execute>
-                                            <runOnIncremental>true</runOnIncremental>
-                                        </execute>
-                                    </action>
-                                </pluginExecution>
-                            </pluginExecutions>
-                        </lifecycleMappingMetadata>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
     </build>
 </project>
