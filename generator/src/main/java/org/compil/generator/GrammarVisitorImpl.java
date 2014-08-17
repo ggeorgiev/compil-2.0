@@ -12,6 +12,10 @@ import org.compil.parser.template.GrammarParser.BlockStatementItemListContext;
 public class GrammarVisitorImpl extends GrammarBaseVisitor<String> {
 	
 	private Document document = null;
+	private Language language = null;
+	
+	private StringBuffer buffer = new StringBuffer();
+	
 	CompilObject activeObject = null;
 	
 	Deque<CompilObject> activeObjects = null;
@@ -23,7 +27,17 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<String> {
 		
 		activeObjects = new ArrayDeque<CompilObject>();
 	}
-
+	
+	@Override 
+	public String visitCodeStatement(GrammarParser.CodeStatementContext ctx) {
+		if (  (ctx.language() != null)
+		   && (!language.equals(new Language(ctx.language().getText())))) {
+		   return "";
+		}
+		
+		return ctx.getText();
+	}
+	
 	@Override 
 	public String visitCompoundStatement(GrammarParser.CompoundStatementContext ctx)
 	{

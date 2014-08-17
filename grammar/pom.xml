@@ -73,6 +73,7 @@
                 <version>4.0</version>
                 <configuration>
                     <sourceDirectory>src/main/antlr4</sourceDirectory>
+					<libDirectory>src/main/antlr4/org/compil/parser/template/language</libDirectory>
                 </configuration>
                 <executions>
                     <execution>

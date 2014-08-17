@@ -35,8 +35,7 @@ compoundStatement
     ;
 
 codeStatement
-	:	LEFT_CODE_BRACE
-		(language WS)?
+	:	LEFT_CODE_BRACE (language WS)?
 		.*?
 		RIGHT_CODE_BRACE
 	;
