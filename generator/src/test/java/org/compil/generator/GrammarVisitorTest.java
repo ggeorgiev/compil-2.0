@@ -46,12 +46,42 @@ public class GrammarVisitorTest {
 	}
 
 	@Test
-	public void sanityTest() {
+	public void sanity1Test() {
 		Document document = parseDocument("structure foo {}");
 		assertNotNull(document);
 		
 		Language cpp = new Language(ELanguage.Cpp);
 		String result = applyGrammer("", document, cpp);
+		assertEquals("", result);
+	}
+	
+	@Test
+	public void codeTest() {
+		Document document = parseDocument("structure foo {}");
+		assertNotNull(document);
+		
+		Language cpp = new Language(ELanguage.Cpp);
+		String result = applyGrammer("<? class .name {} ?>", document, cpp);
+		assertEquals("class .name {}", result);
+	}
+	
+	@Test
+	public void codeLanguageTest() {
+		Document document = parseDocument("structure foo {}");
+		assertNotNull(document);
+		
+		Language cpp = new Language(ELanguage.Cpp);
+		String result = applyGrammer("<?cpp class .name {} ?>", document, cpp);
+		assertEquals("class .name {}", result);
+	}
+
+	@Test
+	public void codeAnotherLanguageTest() {
+		Document document = parseDocument("structure foo {}");
+		assertNotNull(document);
+		
+		Language cpp = new Language(ELanguage.Cpp);
+		String result = applyGrammer("<?java class .name {} ?>", document, cpp);
 		assertEquals("", result);
 	}
 }

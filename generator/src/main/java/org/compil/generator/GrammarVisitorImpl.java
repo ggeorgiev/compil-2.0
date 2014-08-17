@@ -53,7 +53,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<String> {
 		   return "";
 		}
 		
-		return ctx.getText();
+		return ctx.code().getText();
 	}
 	
 	@Override 
