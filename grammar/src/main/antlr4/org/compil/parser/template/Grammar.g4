@@ -17,7 +17,7 @@ iterationStatement
 
 foreach
 	:	KW_FOREACH WS+
-      property WS*
+        property WS*
 		statement
 	;
 	
@@ -27,7 +27,7 @@ selectionStatement
 
 when
 	:	KW_WHEN WS+
-      type WS*
+        type WS*
 		statement
 	;
 	
@@ -45,18 +45,31 @@ compoundStatement
 
 codeStatement
 	:	LEFT_CODE_BRACE (language WS)? WS*
-		code WS*
+		codeList WS*
 		RIGHT_CODE_BRACE
 	;
    
-code
-   :  .*?
-   ;
-	
 language
 	:	KW_LANGUAGE_CPP
 	|	KW_LANGUAGE_JAVA
 	;
+
+codeList
+    :   code
+    |   codeList WS*
+        code
+    ;
+   
+code
+    :   codeExpresion
+    |   ~WS
+    ;
+    
+codeExpresion
+    :   GRAVE_ACCENT
+        property
+        GRAVE_ACCENT
+    ;
 	
 property
 	:	DOT (IDENTIFIER | property)
@@ -71,9 +84,11 @@ LEFT_BRACE:             '{';
 RIGHT_BRACE:            '}';
 LEFT_CODE_BRACE:        '<?';
 RIGHT_CODE_BRACE:       '?>';
+GRAVE_ACCENT:           '`';
 
 KW_FOREACH:             'foreach';
 KW_WHEN:                'when';
+
 KW_LANGUAGE_CPP:        'cpp';
 KW_LANGUAGE_JAVA:       'java';
 

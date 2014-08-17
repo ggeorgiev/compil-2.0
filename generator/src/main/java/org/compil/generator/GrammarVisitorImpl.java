@@ -12,101 +12,77 @@ import org.compil.parser.template.GrammarParser.BlockStatementItemListContext;
 import org.compil.parser.template.GrammarParser.DocumentContext;
 import org.compil.parser.template.GrammarParser.StatementContext;
 
-public class GrammarVisitorImpl extends GrammarBaseVisitor<String> {
+public class GrammarVisitorImpl extends GrammarBaseVisitor<StringBuffer> {
 	
 	private Document document = null;
-	private Language defaultLanguage = null;
+	private Language language = null;
 		
 	CompilObject activeObject = null;
 	
 	Deque<CompilObject> activeObjects = null;
 	
 	public GrammarVisitorImpl(Document document,
-							  Language defaultLanguage)
+							  Language language)
 	{
 		this.document = document;
-		this.defaultLanguage = defaultLanguage;
+		this.language = language;
 
 		activeObject = document;
 		activeObjects = new ArrayDeque<CompilObject>();
 	}
 	
 	@Override 
-	public String visitDocument(DocumentContext ctx) {
+	public StringBuffer visitDocument(DocumentContext ctx) {
 		StringBuffer buffer = new StringBuffer();
 		
 		List<StatementContext> statements = ctx.statement();
 		if (statements == null)
-			return "";
+			return buffer;
 		
 		for (StatementContext statement : statements) {
 			buffer.append(visitStatement(statement));
 		}
 		
-		return buffer.toString();
+		return buffer;
 	}
 	
 	@Override 
-	public String visitCodeStatement(GrammarParser.CodeStatementContext ctx) {
-		if (  (ctx.language() != null)
-		   && (!defaultLanguage.equals(new Language(ctx.language().getText())))) {
-		   return "";
-		}
-		
-		return ctx.code().getText();
-	}
-	
-	@Override 
-	public String visitCompoundStatement(GrammarParser.CompoundStatementContext ctx)
-	{
-		BlockStatementItemListContext bsilc = ctx.blockStatementItemList();
+	public StringBuffer visitCodeStatement(GrammarParser.CodeStatementContext ctx) {
+		StringBuffer buffer = new StringBuffer();
 
-		String result = "";
+		if (  (ctx.language() != null)
+		   && (!language.equals(new Language(ctx.language().getText())))) {
+		   return buffer;
+		}
+		buffer.append(ctx.codeList().getText());
+		return buffer;
+	}
+	
+	@Override 
+	public StringBuffer visitCompoundStatement(GrammarParser.CompoundStatementContext ctx)
+	{
+		StringBuffer buffer = new StringBuffer();
+
+		BlockStatementItemListContext bsilc = ctx.blockStatementItemList();
 		while (bsilc != null) {
 			if (bsilc.statement() != null)
-				result += visitStatement(bsilc.statement());
+				buffer.append(visitStatement(bsilc.statement()));
 			bsilc = bsilc.blockStatementItemList();
 		}
 		
-		return result;
+		return buffer;
 	}
 	
 	@Override 
-	public String visitWhen(GrammarParser.WhenContext ctx)
+	public StringBuffer visitWhen(GrammarParser.WhenContext ctx)
 	{
 		try {
 			Class<?> type = Class.forName(ctx.getText());
 			if (!activeObject.getClass().isInstance(type))
-				return "";
+				return null;
 			return visitStatement(ctx.statement());
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}
-	}
-	
-	@Override
-	public String visitForeach(GrammarParser.ForeachContext ctx)
-	{
-		String result = ctx.KW_FOREACH() + " ";
-		result += visit(ctx.property()) + "\n";
-		result += visit(ctx.statement());
-		return result;
-	}
-	
-	@Override 
-	public String visitProperty(GrammarParser.PropertyContext ctx) 
-	{
-		String result = ctx.DOT().getText();
-		if (ctx.IDENTIFIER()  != null)
-			result += ctx.IDENTIFIER().getText();
-		else if (ctx.property() != null)
-			result += visit(ctx.property());
-		return result;
-	}
-	
-	@Override 
-	public String visitType(GrammarParser.TypeContext ctx)
-	{
-		return ctx.IDENTIFIER().getText();
 	}	
 }

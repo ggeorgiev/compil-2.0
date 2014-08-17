@@ -37,7 +37,8 @@ public class GrammarVisitorTest {
 		ParseTree tree = parser.document();
 		
 		GrammarVisitorImpl visitor = new GrammarVisitorImpl(document, defaultLanguage);
-		return visitor.visit(tree);
+		StringBuffer buffer = visitor.visit(tree);
+		return buffer == null ? "" : buffer.toString();
 	}
 
 	@BeforeClass
