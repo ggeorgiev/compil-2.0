@@ -8,6 +8,10 @@ public class Language {
 	}
 	
 	private ELanguage value = ELanguage.Undefined; 
+	
+	Language(ELanguage value) {
+		this.value = value;
+	}
 
 	Language(String name) {
 		if (name.equalsIgnoreCase("cpp")) {

@@ -2,36 +2,54 @@ package org.compil.generator;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.List;
 
 import org.compil.compiler.model.CompilObject;
 import org.compil.compiler.model.Document;
 import org.compil.parser.template.GrammarBaseVisitor;
 import org.compil.parser.template.GrammarParser;
 import org.compil.parser.template.GrammarParser.BlockStatementItemListContext;
+import org.compil.parser.template.GrammarParser.DocumentContext;
+import org.compil.parser.template.GrammarParser.StatementContext;
 
 public class GrammarVisitorImpl extends GrammarBaseVisitor<String> {
 	
 	private Document document = null;
-	private Language language = null;
-	
-	private StringBuffer buffer = new StringBuffer();
-	
+	private Language defaultLanguage = null;
+		
 	CompilObject activeObject = null;
 	
 	Deque<CompilObject> activeObjects = null;
 	
-	public GrammarVisitorImpl(Document document)
+	public GrammarVisitorImpl(Document document,
+							  Language defaultLanguage)
 	{
 		this.document = document;
+		this.defaultLanguage = defaultLanguage;
+
 		activeObject = document;
-		
 		activeObjects = new ArrayDeque<CompilObject>();
+	}
+	
+	@Override 
+	public String visitDocument(DocumentContext ctx) {
+		StringBuffer buffer = new StringBuffer();
+		
+		List<StatementContext> statements = ctx.statement();
+		if (statements == null)
+			return "";
+		
+		for (StatementContext statement : statements) {
+			buffer.append(visitStatement(statement));
+		}
+		
+		return buffer.toString();
 	}
 	
 	@Override 
 	public String visitCodeStatement(GrammarParser.CodeStatementContext ctx) {
 		if (  (ctx.language() != null)
-		   && (!language.equals(new Language(ctx.language().getText())))) {
+		   && (!defaultLanguage.equals(new Language(ctx.language().getText())))) {
 		   return "";
 		}
 		

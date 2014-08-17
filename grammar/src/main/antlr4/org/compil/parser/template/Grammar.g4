@@ -1,5 +1,9 @@
 grammar Grammar;
 
+document
+	:	statement*
+	;
+
 statement
 	:	compoundStatement
 	|	iterationStatement
