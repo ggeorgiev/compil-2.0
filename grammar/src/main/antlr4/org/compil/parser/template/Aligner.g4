@@ -1,96 +1,96 @@
 grammar Aligner;
 
 line
-	:	emptyLine
-	|	codeLine
-	;
-	
+    :   emptyLine
+    |   codeLine
+    ;
+
 emptyLine
-	:	( KW_EMPTY KW_LINE )?
-		( EOL | EOF )
-	;
+    :   ( KW_EMPTY KW_LINE )?
+        ( EOL | EOF )
+    ;
 
 codeLine
-	:	KW_LINE COLON
-		indent COLON
-		code
-		( EOL | EOF )
-	;
-	
+    :   KW_LINE COLON
+        indent COLON
+        code
+        ( EOL | EOF )
+    ;
+
 code
-	:	CODE*
-	;
-	
+    :   CODE*
+    ;
+
 indent
-	:	actionIndent
-	|	expressionIndent
-	;
-	
+    :   actionIndent
+    |   expressionIndent
+    ;
+
 actionIndent
-	: pushIndent
-	| popIndent
-	;
-	
+    : pushIndent
+    | popIndent
+    ;
+
 pushIndent
-	:	KW_PUSH
-		expressionIndent?
-	;
+    :   KW_PUSH
+        expressionIndent?
+    ;
 
 popIndent
-	:	KW_POP
-	;
-	
-expressionIndent
-	:	absoluteIndent
-	|	relativeIndent
-	;
-	
-absoluteIndent
-	:	NUMBER
-	;
-	
-relativeIndent
-	:	sign NUMBER
-	;
-	
-sign
-	:	PLUS
-	|	MINUS
-	;
-	
-COLON:					':';
-MINUS:					'-';
-PLUS:					'+';
+    :   KW_POP
+    ;
 
-KW_EMPTY:				'empty';
-KW_LINE:				'line';
-KW_PUSH:				'push';
-KW_POP: 				'pop';
+expressionIndent
+    :   absoluteIndent
+    |   relativeIndent
+    ;
+
+absoluteIndent
+    :   NUMBER
+    ;
+
+relativeIndent
+    :   sign NUMBER
+    ;
+
+sign
+    :   PLUS
+    |   MINUS
+    ;
+
+COLON:                  ':';
+MINUS:                  '-';
+PLUS:                   '+';
+
+KW_EMPTY:               'empty';
+KW_LINE:                'line';
+KW_PUSH:                'push';
+KW_POP:                 'pop';
 
 NUMBER
-	:	DIGIT+
-	;
+    :   DIGIT+
+    ;
 
 EOL
-	:	('\n' | '\r\n')
-	;
-    
+    :   ('\n' | '\r\n')
+    ;
+
 SPACING
-	:	LINE_WS -> skip
-	;
-	
+    :   LINE_WS -> skip
+    ;
+
 CODE
-	:	(~('\n' | '\r'))
-	;
+    :   (~('\n' | '\r'))
+    ;
 
 fragment
 DIGIT
     :   '0'..'9'
     ;
 
-fragment   
+fragment
 LINE_WS
     :   ' '
-    |	'\t'
-    |	'\u000C'
+    |   '\t'
+    |   '\u000C'
     ;

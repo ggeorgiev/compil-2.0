@@ -1,35 +1,35 @@
 grammar Grammar;
 
 document
-	:	statement*
-	;
+    :   statement*
+    ;
 
 statement
-	:	compoundStatement
-	|	iterationStatement
-	|	selectionStatement
-	|	codeStatement
-	;
+    :   compoundStatement
+    |   iterationStatement
+    |   selectionStatement
+    |   codeStatement
+    ;
 
 iterationStatement
-	:	foreach
-	;
+    :   foreach
+    ;
 
 foreach
-	:	KW_FOREACH WS+
+    :   KW_FOREACH WS+
         property WS*
-		statement
-	;
+        statement
+    ;
 
 selectionStatement
-	:	when
-	;
+    :   when
+    ;
 
 when
-	:	KW_WHEN WS+
+    :   KW_WHEN WS+
         type WS*
-		statement
-	;
+        statement
+    ;
 
 blockStatementItemList
     :   statement
@@ -44,15 +44,15 @@ compoundStatement
     ;
 
 codeStatement
-	:	LEFT_CODE_BRACE (language WS)? WS*
-		codeList WS*
-		RIGHT_CODE_BRACE
-	;
+    :   LEFT_CODE_BRACE (language WS)? WS*
+        codeList WS*
+        RIGHT_CODE_BRACE
+    ;
 
 language
-	:	KW_LANGUAGE_CPP
-	|	KW_LANGUAGE_JAVA
-	;
+    :   KW_LANGUAGE_CPP
+    |   KW_LANGUAGE_JAVA
+    ;
 
 codeList
     :   code
@@ -76,12 +76,12 @@ codeWhitespace
     ;
 
 property
-	:	DOT (IDENTIFIER | property)
-	;
+    :   DOT (IDENTIFIER | property)
+    ;
 
 type
-	:	IDENTIFIER
-	;
+    :   IDENTIFIER
+    ;
 
 DOT:                    '.';
 LEFT_BRACE:             '{';
@@ -101,8 +101,8 @@ IDENTIFIER
     ;
 
 COMMENT
-	:	'#' .*? ( EOL | EOF ) -> skip
-	;
+    :   '#' .*? ( EOL | EOF ) -> skip
+    ;
 
 WS
     :   (LINE_WS | EOL)
@@ -110,8 +110,8 @@ WS
 
 fragment
 EOL
-	:	('\n' |	'\r\n')
-	;
+    :   ('\n' | '\r\n')
+    ;
 
 fragment
 LETTER
@@ -128,6 +128,6 @@ ID_DIGIT
 fragment
 LINE_WS
     :   ' '
-    |	'\t'
-    |	'\u000C'
+    |   '\t'
+    |   '\u000C'
     ;

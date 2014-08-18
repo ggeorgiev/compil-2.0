@@ -18,81 +18,81 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class GrammarVisitorTest {
-	Document parseDocument(String document) {
-		ANTLRInputStream inputStream = new ANTLRInputStream(document);
-		ModelLexer lexer = new ModelLexer(inputStream);
-		TokenStream stream = new CommonTokenStream(lexer);
-		ModelParser parser = new ModelParser(stream);
-		ParseTree tree = parser.document();
+    Document parseDocument(String document) {
+        ANTLRInputStream inputStream = new ANTLRInputStream(document);
+        ModelLexer lexer = new ModelLexer(inputStream);
+        TokenStream stream = new CommonTokenStream(lexer);
+        ModelParser parser = new ModelParser(stream);
+        ParseTree tree = parser.document();
 
-		CompilDocumentVisitor visitor = new CompilDocumentVisitor();
-		return visitor.visit(tree);
-	}
+        CompilDocumentVisitor visitor = new CompilDocumentVisitor();
+        return visitor.visit(tree);
+    }
 
-	String applyGrammer(String grammar, Document document, Language defaultLanguage) {
-		ANTLRInputStream inputStream = new ANTLRInputStream(grammar);
-		GrammarLexer lexer = new GrammarLexer(inputStream);
-		TokenStream stream = new CommonTokenStream(lexer);
-		GrammarParser parser = new GrammarParser(stream);
-		ParseTree tree = parser.document();
+    String applyGrammer(String grammar, Document document, Language defaultLanguage) {
+        ANTLRInputStream inputStream = new ANTLRInputStream(grammar);
+        GrammarLexer lexer = new GrammarLexer(inputStream);
+        TokenStream stream = new CommonTokenStream(lexer);
+        GrammarParser parser = new GrammarParser(stream);
+        ParseTree tree = parser.document();
 
-		GrammarVisitorImpl visitor = new GrammarVisitorImpl(document, defaultLanguage);
-		StringBuffer buffer = visitor.visit(tree);
-		return buffer == null ? "" : buffer.toString();
-	}
+        GrammarVisitorImpl visitor = new GrammarVisitorImpl(document, defaultLanguage);
+        StringBuffer buffer = visitor.visit(tree);
+        return buffer == null ? "" : buffer.toString();
+    }
 
-	@BeforeClass
-	public void setUp() {
-		// code that will be invoked when this test is instantiated
-	}
+    @BeforeClass
+    public void setUp() {
+        // code that will be invoked when this test is instantiated
+    }
 
-	@Test
-	public void sanity1Test() {
-		Document document = parseDocument("structure foo {}");
-		assertNotNull(document);
+    @Test
+    public void sanity1Test() {
+        Document document = parseDocument("structure foo {}");
+        assertNotNull(document);
 
-		Language cpp = new Language(ELanguage.Cpp);
-		String result = applyGrammer("", document, cpp);
-		assertEquals("", result);
-	}
+        Language cpp = new Language(ELanguage.Cpp);
+        String result = applyGrammer("", document, cpp);
+        assertEquals("", result);
+    }
 
-	@Test
-	public void codeTest() {
-		Document document = parseDocument("structure foo {}");
-		assertNotNull(document);
+    @Test
+    public void codeTest() {
+        Document document = parseDocument("structure foo {}");
+        assertNotNull(document);
 
-		Language cpp = new Language(ELanguage.Cpp);
-		String result = applyGrammer("<? class Name {} ?>", document, cpp);
-		assertEquals("class Name {}", result);
-	}
+        Language cpp = new Language(ELanguage.Cpp);
+        String result = applyGrammer("<? class Name {} ?>", document, cpp);
+        assertEquals("class Name {}", result);
+    }
 
-	@Test
-	public void codeLanguageTest() {
-		Document document = parseDocument("structure foo {}");
-		assertNotNull(document);
+    @Test
+    public void codeLanguageTest() {
+        Document document = parseDocument("structure foo {}");
+        assertNotNull(document);
 
-		Language cpp = new Language(ELanguage.Cpp);
-		String result = applyGrammer("<?cpp class Name {} ?>", document, cpp);
-		assertEquals("class Name {}", result);
-	}
+        Language cpp = new Language(ELanguage.Cpp);
+        String result = applyGrammer("<?cpp class Name {} ?>", document, cpp);
+        assertEquals("class Name {}", result);
+    }
 
-	@Test
-	public void codeAnotherLanguageTest() {
-		Document document = parseDocument("structure foo {}");
-		assertNotNull(document);
+    @Test
+    public void codeAnotherLanguageTest() {
+        Document document = parseDocument("structure foo {}");
+        assertNotNull(document);
 
-		Language cpp = new Language(ELanguage.Cpp);
-		String result = applyGrammer("<?java class Name {} ?>", document, cpp);
-		assertEquals("", result);
-	}
+        Language cpp = new Language(ELanguage.Cpp);
+        String result = applyGrammer("<?java class Name {} ?>", document, cpp);
+        assertEquals("", result);
+    }
 
-	@Test
-	public void codeExpresionTest() {
-		Document document = parseDocument("structure foo {}");
-		assertNotNull(document);
+    @Test
+    public void codeExpresionTest() {
+        Document document = parseDocument("structure foo {}");
+        assertNotNull(document);
 
-		Language cpp = new Language(ELanguage.Cpp);
-		String result = applyGrammer("<?cpp class `.name` {} ?>", document, cpp);
-		assertEquals("class <name> {}", result);
-	}
+        Language cpp = new Language(ELanguage.Cpp);
+        String result = applyGrammer("<?cpp class `.name` {} ?>", document, cpp);
+        assertEquals("class <name> {}", result);
+    }
 }
