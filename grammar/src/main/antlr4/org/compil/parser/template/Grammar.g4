@@ -10,17 +10,17 @@ statement
 	|	selectionStatement
 	|	codeStatement
 	;
-	
+
 iterationStatement
 	:	foreach
-	;	
+	;
 
 foreach
 	:	KW_FOREACH WS+
         property WS*
 		statement
 	;
-	
+
 selectionStatement
 	:	when
 	;
@@ -30,13 +30,13 @@ when
         type WS*
 		statement
 	;
-	
+
 blockStatementItemList
     :   statement
     |   blockStatementItemList WS*
         statement
     ;
-	
+
 compoundStatement
     :   LEFT_BRACE WS*
         (blockStatementItemList WS*)?
@@ -48,7 +48,7 @@ codeStatement
 		codeList WS*
 		RIGHT_CODE_BRACE
 	;
-   
+
 language
 	:	KW_LANGUAGE_CPP
 	|	KW_LANGUAGE_JAVA
@@ -56,29 +56,33 @@ language
 
 codeList
     :   code
-    |   codeList WS*
+    |   codeList codeWhitespace?
         code
     ;
-   
+
 code
-    :   codeExpresion
+    :   codeExpression
     |   ~WS
     ;
-    
-codeExpresion
+
+codeExpression
     :   GRAVE_ACCENT
         property
         GRAVE_ACCENT
     ;
-	
+
+codeWhitespace
+    :   WS+
+    ;
+
 property
 	:	DOT (IDENTIFIER | property)
 	;
-	
+
 type
 	:	IDENTIFIER
 	;
-	
+
 DOT:                    '.';
 LEFT_BRACE:             '{';
 RIGHT_BRACE:            '}';
@@ -95,33 +99,33 @@ KW_LANGUAGE_JAVA:       'java';
 IDENTIFIER
     :   LETTER (LETTER|ID_DIGIT)*
     ;
-	
+
 COMMENT
 	:	'#' .*? ( EOL | EOF ) -> skip
 	;
-	
+
 WS
     :   (LINE_WS | EOL)
     ;
-    
-fragment	
+
+fragment
 EOL
 	:	('\n' |	'\r\n')
 	;
-    
+
 fragment
 LETTER
     :   '_'
     |   'A'..'Z'
     |   'a'..'z'
     ;
-    
+
 fragment
 ID_DIGIT
     :   '0'..'9'
     ;
-    
-fragment    
+
+fragment
 LINE_WS
     :   ' '
     |	'\t'
