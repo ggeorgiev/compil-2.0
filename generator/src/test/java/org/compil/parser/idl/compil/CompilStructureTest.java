@@ -9,31 +9,31 @@ import org.testng.annotations.*;
 
 public class CompilStructureTest {
 
-    String structureDump(String input) {
-        ANTLRInputStream inputStream = new ANTLRInputStream(input);
-        ModelLexer lexer = new ModelLexer(inputStream);
-        TokenStream stream = new CommonTokenStream(lexer);
-        ModelParser parser = new ModelParser(stream);
-        ParseTree tree = parser.structure();
+	String structureDump(String input) {
+		ANTLRInputStream inputStream = new ANTLRInputStream(input);
+		ModelLexer lexer = new ModelLexer(inputStream);
+		TokenStream stream = new CommonTokenStream(lexer);
+		ModelParser parser = new ModelParser(stream);
+		ParseTree tree = parser.structure();
 
-        ModelVisitorImpl visitor = new ModelVisitorImpl();
-        return visitor.visit(tree);
-    }
+		ModelVisitorImpl visitor = new ModelVisitorImpl();
+		return visitor.visit(tree);
+	}
 
-    @BeforeClass
-    public void setUp() {
-        // code that will be invoked when this test is instantiated
-    }
+	@BeforeClass
+	public void setUp() {
+		// code that will be invoked when this test is instantiated
+	}
 
-    @Test
-    public void commentTest() {
-        String dump = structureDump("// comment\nstructure sname{}");
-        assertEquals("structure sname\n{\n}\n", dump);
-    }
+	@Test
+	public void commentTest() {
+		String dump = structureDump("// comment\nstructure sname{}");
+		assertEquals("structure sname\n{\n}\n", dump);
+	}
 
-    @Test
-    public void commentSpaceTest() {
-        String dump = structureDump("// comment\n  structure sname{}");
-        assertEquals("structure sname\n{\n}\n", dump);
-    }
+	@Test
+	public void commentSpaceTest() {
+		String dump = structureDump("// comment\n  structure sname{}");
+		assertEquals("structure sname\n{\n}\n", dump);
+	}
 }

@@ -9,40 +9,40 @@ import org.testng.annotations.*;
 
 public class CompilCommentTest {
 
-    TokenStream tokenStream(String input) {
-        ANTLRInputStream inputStream = new ANTLRInputStream(input);
-        ModelLexer lexer = new ModelLexer(inputStream);
-        return new CommonTokenStream(lexer);
-    }
+	TokenStream tokenStream(String input) {
+		ANTLRInputStream inputStream = new ANTLRInputStream(input);
+		ModelLexer lexer = new ModelLexer(inputStream);
+		return new CommonTokenStream(lexer);
+	}
 
-    @BeforeClass
-    public void setUp() {
-        // code that will be invoked when this test is instantiated
-    }
+	@BeforeClass
+	public void setUp() {
+		// code that will be invoked when this test is instantiated
+	}
 
-    @Test
-    public void commentTest() {
-        String[] strings = {
-                "//test",
-                "//test\n",
-                "    //  test\n",
-                "    //  test1\n    //  test2\n",
-                "/* test */",
-                "    /* test */",
-                "    /* test1 \n test2 */",
-        };
+	@Test
+	public void commentTest() {
+		String[] strings = {
+				"//test",
+				"//test\n",
+				"	 //	 test\n",
+				"	 //	 test1\n	//	test2\n",
+				"/* test */",
+				"	 /* test */",
+				"	 /* test1 \n test2 */",
+		};
 
 
-        for (String string : strings)
-        {
-            //System.out.print("testing: <" + string + ">\n");
+		for (String string : strings)
+		{
+			//System.out.print("testing: <" + string + ">\n");
 
-            TokenStream stream = tokenStream(string);
-            ModelParser parser = new ModelParser(stream);
+			TokenStream stream = tokenStream(string);
+			ModelParser parser = new ModelParser(stream);
 
-            ParseTree tree = parser.objectComment();
+			ParseTree tree = parser.objectComment();
 
-            assertEquals(string, tree.getText());
-        }
-    }
+			assertEquals(string, tree.getText());
+		}
+	}
 }

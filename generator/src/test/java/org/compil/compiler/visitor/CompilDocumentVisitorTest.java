@@ -17,28 +17,28 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class CompilDocumentVisitorTest {
-    Document parseDocument(String input) {
-        ANTLRInputStream inputStream = new ANTLRInputStream(input);
-        ModelLexer lexer = new ModelLexer(inputStream);
-        TokenStream stream = new CommonTokenStream(lexer);
-        ModelParser parser = new ModelParser(stream);
-        ParseTree tree = parser.document();
+	Document parseDocument(String input) {
+		ANTLRInputStream inputStream = new ANTLRInputStream(input);
+		ModelLexer lexer = new ModelLexer(inputStream);
+		TokenStream stream = new CommonTokenStream(lexer);
+		ModelParser parser = new ModelParser(stream);
+		ParseTree tree = parser.document();
 
-        CompilDocumentVisitor visitor = new CompilDocumentVisitor();
-        return visitor.visit(tree);
-    }
+		CompilDocumentVisitor visitor = new CompilDocumentVisitor();
+		return visitor.visit(tree);
+	}
 
-    @BeforeClass
-    public void setUp() {
-        // code that will be invoked when this test is instantiated
-    }
+	@BeforeClass
+	public void setUp() {
+		// code that will be invoked when this test is instantiated
+	}
 
-    @Test
-    public void sanityTest() {
-        Document document = parseDocument("structure foo {}");
-        assertNotNull(document);
+	@Test
+	public void sanityTest() {
+		Document document = parseDocument("structure foo {}");
+		assertNotNull(document);
 
-        List<CompilObject> objects = document.getObjects();
-        assertEquals(1, objects.size());
-    }
+		List<CompilObject> objects = document.getObjects();
+		assertEquals(1, objects.size());
+	}
 }

@@ -1,84 +1,84 @@
 grammar Model;
 
 document
-    :   structure*
-    ;
+	:	structure*
+	;
 
 objectComment
-    :   OBJECT_COMMENT
-    |   // always optional
-    ;
+	:	OBJECT_COMMENT
+	|	// always optional
+	;
 
 structure
-    :   objectComment
-        KW_STRUCTURE name
-        LEFT_BRACE
-        RIGHT_BRACE
-    ;
+	:	objectComment
+		KW_STRUCTURE name
+		LEFT_BRACE
+		RIGHT_BRACE
+	;
 
 name
-    :   IDENTIFIER
-    ;
+	:	IDENTIFIER
+	;
 
-LEFT_BRACE:             '{';
-RIGHT_BRACE:            '}';
+LEFT_BRACE:				'{';
+RIGHT_BRACE:			'}';
 
-KW_STRUCTURE:           'structure';
+KW_STRUCTURE:			'structure';
 
 IDENTIFIER
-    :   LETTER (LETTER|ID_DIGIT)*
-    ;
+	:	LETTER (LETTER|ID_DIGIT)*
+	;
 
 OBJECT_COMMENT
-    :   OBJECT_BLOCK_COMMENT
-    |   OBJECT_LINE_BLOCK_COMMENT
-    ;
+	:	OBJECT_BLOCK_COMMENT
+	|	OBJECT_LINE_BLOCK_COMMENT
+	;
 
 OBJECT_BLOCK_COMMENT
-    :   LINE_WS* '/*' .*? '*/'
-    ;
+	:	LINE_WS* '/*' .*? '*/'
+	;
 
 OBJECT_LINE_BLOCK_COMMENT
-    :   (LINE_WS*? OBJECT_LINE_COMMENT)+
-    ;
+	:	(LINE_WS*? OBJECT_LINE_COMMENT)+
+	;
 
 fragment
 OBJECT_LINE_COMMENT
-    :   '//' .*? ( EOL | EOF )
-    ;
+	:	'//' .*? ( EOL | EOF )
+	;
 
 SPACING
-    :   WS -> skip
-    ;
+	:	WS -> skip
+	;
 
 COMMENT
-    :   '#' .*? ( EOL | EOF ) -> skip
-    ;
+	:	'#' .*? ( EOL | EOF ) -> skip
+	;
 
 WS
-    :   (LINE_WS | EOL)
-    ;
+	:	(LINE_WS | EOL)
+	;
 
 fragment
 EOL
-    :   ('\n' | '\r\n')
-    ;
+	:	('\n' | '\r\n')
+	;
 
 fragment
 LETTER
-    :   '_'
-    |   'A'..'Z'
-    |   'a'..'z'
-    ;
+	:	'_'
+	|	'A'..'Z'
+	|	'a'..'z'
+	;
 
 fragment
 ID_DIGIT
-    :   '0'..'9'
-    ;
+	:	'0'..'9'
+	;
 
 fragment
 LINE_WS
-    :   ' '
-    |   '\t'
-    |   '\u000C'
-    ;
+	:	' '
+	|	'\t'
+	|	'\u000C'
+	;

@@ -14,26 +14,26 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class CompilStructureVisitorTest {
-    Structure parseStructure(String input) {
-        ANTLRInputStream inputStream = new ANTLRInputStream(input);
-        ModelLexer lexer = new ModelLexer(inputStream);
-        TokenStream stream = new CommonTokenStream(lexer);
-        ModelParser parser = new ModelParser(stream);
-        ParseTree tree = parser.structure();
+	Structure parseStructure(String input) {
+		ANTLRInputStream inputStream = new ANTLRInputStream(input);
+		ModelLexer lexer = new ModelLexer(inputStream);
+		TokenStream stream = new CommonTokenStream(lexer);
+		ModelParser parser = new ModelParser(stream);
+		ParseTree tree = parser.structure();
 
-        CompilStructureVisitor visitor = new CompilStructureVisitor();
-        return visitor.visit(tree);
-    }
+		CompilStructureVisitor visitor = new CompilStructureVisitor();
+		return visitor.visit(tree);
+	}
 
-    @BeforeClass
-    public void setUp() {
-        // code that will be invoked when this test is instantiated
-    }
+	@BeforeClass
+	public void setUp() {
+		// code that will be invoked when this test is instantiated
+	}
 
-    @Test
-    public void sanityTest() {
-        Structure structure = parseStructure("structure foo {}");
-        assertNotNull(structure);
-        assertEquals("foo", structure.getName());
-    }
+	@Test
+	public void sanityTest() {
+		Structure structure = parseStructure("structure foo {}");
+		assertNotNull(structure);
+		assertEquals("foo", structure.getName());
+	}
 }

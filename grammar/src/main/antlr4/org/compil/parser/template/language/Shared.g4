@@ -1,45 +1,45 @@
 lexer grammar Shared;
 
 PROPERTY
-    :   DOT+ IDENTIFIER
-    ;
+	:	DOT+ IDENTIFIER
+	;
 
 DOT
-    :   '.'
-    ;
+	:	'.'
+	;
 
 IDENTIFIER
-    :   LETTER (LETTER|ID_DIGIT)*
-    ;
+	:	LETTER (LETTER|ID_DIGIT)*
+	;
 
 SPACING
-    :   WS -> skip
-    ;
+	:	WS -> skip
+	;
 
 WS
-    :   (LINE_WS | EOL)
-    ;
+	:	(LINE_WS | EOL)
+	;
 
 fragment
 EOL
-    :   ('\n' | '\r\n')
-    ;
+	:	('\n' | '\r\n')
+	;
 
 fragment
 LETTER
-    :   '_'
-    |   'A'..'Z'
-    |   'a'..'z'
-    ;
+	:	'_'
+	|	'A'..'Z'
+	|	'a'..'z'
+	;
 
 fragment
 ID_DIGIT
-    :   '0'..'9'
-    ;
+	:	'0'..'9'
+	;
 
 fragment
 LINE_WS
-    :   ' '
-    |   '\t'
-    |   '\u000C'
-    ;
+	:	' '
+	|	'\t'
+	|	'\u000C'
+	;

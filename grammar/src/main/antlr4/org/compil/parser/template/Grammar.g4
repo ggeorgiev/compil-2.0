@@ -1,133 +1,133 @@
 grammar Grammar;
 
 document
-    :   statement*
-    ;
+	:	statement*
+	;
 
 statement
-    :   compoundStatement
-    |   iterationStatement
-    |   selectionStatement
-    |   codeStatement
-    ;
+	:	compoundStatement
+	|	iterationStatement
+	|	selectionStatement
+	|	codeStatement
+	;
 
 iterationStatement
-    :   foreach
-    ;
+	:	foreach
+	;
 
 foreach
-    :   KW_FOREACH WS+
-        property WS*
-        statement
-    ;
+	:	KW_FOREACH WS+
+		property WS*
+		statement
+	;
 
 selectionStatement
-    :   when
-    ;
+	:	when
+	;
 
 when
-    :   KW_WHEN WS+
-        type WS*
-        statement
-    ;
+	:	KW_WHEN WS+
+		type WS*
+		statement
+	;
 
 blockStatementItemList
-    :   statement
-    |   blockStatementItemList WS*
-        statement
-    ;
+	:	statement
+	|	blockStatementItemList WS*
+		statement
+	;
 
 compoundStatement
-    :   LEFT_BRACE WS*
-        (blockStatementItemList WS*)?
-        RIGHT_BRACE
-    ;
+	:	LEFT_BRACE WS*
+		(blockStatementItemList WS*)?
+		RIGHT_BRACE
+	;
 
 codeStatement
-    :   LEFT_CODE_BRACE (language WS)? WS*
-        codeList WS*
-        RIGHT_CODE_BRACE
-    ;
+	:	LEFT_CODE_BRACE (language WS)? WS*
+		codeList WS*
+		RIGHT_CODE_BRACE
+	;
 
 language
-    :   KW_LANGUAGE_CPP
-    |   KW_LANGUAGE_JAVA
-    ;
+	:	KW_LANGUAGE_CPP
+	|	KW_LANGUAGE_JAVA
+	;
 
 codeList
-    :   code
-    |   codeList codeWhitespace?
-        code
-    ;
+	:	code
+	|	codeList codeWhitespace?
+		code
+	;
 
 code
-    :   codeExpression
-    |   ~WS
-    ;
+	:	codeExpression
+	|	~WS
+	;
 
 codeExpression
-    :   GRAVE_ACCENT
-        property
-        GRAVE_ACCENT
-    ;
+	:	GRAVE_ACCENT
+		property
+		GRAVE_ACCENT
+	;
 
 codeWhitespace
-    :   WS+
-    ;
+	:	WS+
+	;
 
 property
-    :   DOT (IDENTIFIER | property)
-    ;
+	:	DOT (IDENTIFIER | property)
+	;
 
 type
-    :   IDENTIFIER
-    ;
+	:	IDENTIFIER
+	;
 
-DOT:                    '.';
-LEFT_BRACE:             '{';
-RIGHT_BRACE:            '}';
-LEFT_CODE_BRACE:        '<?';
-RIGHT_CODE_BRACE:       '?>';
-GRAVE_ACCENT:           '`';
+DOT:					'.';
+LEFT_BRACE:				'{';
+RIGHT_BRACE:			'}';
+LEFT_CODE_BRACE:		'<?';
+RIGHT_CODE_BRACE:		'?>';
+GRAVE_ACCENT:			'`';
 
-KW_FOREACH:             'foreach';
-KW_WHEN:                'when';
+KW_FOREACH:				'foreach';
+KW_WHEN:				'when';
 
-KW_LANGUAGE_CPP:        'cpp';
-KW_LANGUAGE_JAVA:       'java';
+KW_LANGUAGE_CPP:		'cpp';
+KW_LANGUAGE_JAVA:		'java';
 
 IDENTIFIER
-    :   LETTER (LETTER|ID_DIGIT)*
-    ;
+	:	LETTER (LETTER|ID_DIGIT)*
+	;
 
 COMMENT
-    :   '#' .*? ( EOL | EOF ) -> skip
-    ;
+	:	'#' .*? ( EOL | EOF ) -> skip
+	;
 
 WS
-    :   (LINE_WS | EOL)
-    ;
+	:	(LINE_WS | EOL)
+	;
 
 fragment
 EOL
-    :   ('\n' | '\r\n')
-    ;
+	:	('\n' | '\r\n')
+	;
 
 fragment
 LETTER
-    :   '_'
-    |   'A'..'Z'
-    |   'a'..'z'
-    ;
+	:	'_'
+	|	'A'..'Z'
+	|	'a'..'z'
+	;
 
 fragment
 ID_DIGIT
-    :   '0'..'9'
-    ;
+	:	'0'..'9'
+	;
 
 fragment
 LINE_WS
-    :   ' '
-    |   '\t'
-    |   '\u000C'
-    ;
+	:	' '
+	|	'\t'
+	|	'\u000C'
+	;
