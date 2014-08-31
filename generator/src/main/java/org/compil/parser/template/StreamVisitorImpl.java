@@ -53,7 +53,7 @@ public class StreamVisitorImpl extends StreamBaseVisitor<String> {
 	public String visitStream(StreamParser.StreamContext ctx) {
 		String result = ctx.KW_STREAM() + " " +
 						visitStreamName(ctx.streamName()) + " " + ctx.LEFT_BRACE() + "\n";
-		result += "	   " + ctx.KW_PATH() + ctx.COLON() + " " +
+		result += "    " + ctx.KW_PATH() + ctx.COLON() + " " +
 				  visitPath(ctx.path()) + ctx.SEMICOLON()  + "\n";
 		result += ctx.RIGHT_BRACE() + "\n";
 		return result;
