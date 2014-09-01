@@ -3,6 +3,7 @@ package org.compil.compiler.annotation;
 import static org.testng.AssertJUnit.assertFalse;
 import static org.testng.AssertJUnit.assertTrue;
 
+import org.compil.compiler.model.IPropertyFactory;
 import org.compil.compiler.model.PropertyFactory;
 import org.compil.compiler.model.Structure;
 import org.testng.annotations.BeforeClass;
@@ -16,8 +17,9 @@ public class PropertyFactoryTest {
 
 	@Test
 	public void hasPropertyTest() {
+		IPropertyFactory propertyFactory = new PropertyFactory();
 		Structure structure = new Structure();
-		assertTrue(PropertyFactory.hasProperty(structure, "name"));
-		assertFalse(PropertyFactory.hasProperty(structure, "blah"));
+		assertTrue(propertyFactory.hasProperty(structure, "name"));
+		assertFalse(propertyFactory.hasProperty(structure, "blah"));
 	}
 }

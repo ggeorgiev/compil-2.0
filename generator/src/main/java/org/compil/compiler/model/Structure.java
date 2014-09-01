@@ -13,4 +13,8 @@ public class Structure extends CompilObject {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public String getBaseName() {
+		return getName();
+	}
 }

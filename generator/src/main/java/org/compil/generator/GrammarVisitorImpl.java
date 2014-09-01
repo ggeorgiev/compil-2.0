@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.compil.compiler.model.CompilObject;
 import org.compil.compiler.model.Document;
+import org.compil.compiler.model.IPropertyFactory;
+import org.compil.compiler.model.PropertyFactory;
 import org.compil.parser.template.GrammarBaseVisitor;
 import org.compil.parser.template.GrammarParser.BlockStatementItemListContext;
 import org.compil.parser.template.GrammarParser.CodeContext;
@@ -14,11 +16,15 @@ import org.compil.parser.template.GrammarParser.CodeListContext;
 import org.compil.parser.template.GrammarParser.CodeStatementContext;
 import org.compil.parser.template.GrammarParser.CompoundStatementContext;
 import org.compil.parser.template.GrammarParser.DocumentContext;
+import org.compil.parser.template.GrammarParser.ForeachContext;
+import org.compil.parser.template.GrammarParser.PropertyContext;
 import org.compil.parser.template.GrammarParser.StatementContext;
 import org.compil.parser.template.GrammarParser.WhenContext;
 
 public class GrammarVisitorImpl extends GrammarBaseVisitor<StringBuffer> {
 
+	private IPropertyFactory propertyFactory = new PropertyFactory();
+	
 	private Document document = null;
 	private Language language = null;
 
@@ -89,10 +95,21 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<StringBuffer> {
 
 		return new StringBuffer(ctx.getText());
 	}
+	
+	@Override
+	public StringBuffer visitProperty(PropertyContext ctx) {
+		String property = ctx.getText();
+		String name = activeObject.getPropertyName(propertyFactory, property);
+		return new StringBuffer(name);
+	}
 
 	@Override
 	public StringBuffer visitCodeExpression(CodeExpressionContext ctx) {
-		return new StringBuffer("<name>");
+		if (ctx.property() != null) {
+			return visitProperty(ctx.property());
+		}
+			
+		throw new UnsupportedOperationException("Unsuported code expression");
 	}
 
 	@Override
@@ -121,5 +138,23 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<StringBuffer> {
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	@Override
+	public StringBuffer visitForeach(ForeachContext ctx)
+	{
+		StringBuffer buffer = new StringBuffer();
+		
+		if (ctx.property() != null) {
+			String property = ctx.property().getText();
+
+			List<CompilObject> objects = document.getObjects();
+			for (CompilObject object : objects) {
+				activeObject = object;
+				buffer.append(visitStatement(ctx.statement()));
+			}
+		}
+		
+		return buffer;
 	}
 }

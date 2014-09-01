@@ -51,7 +51,7 @@ public class PropertyAnnotationProcessor extends AbstractProcessor {
 			formatter.format("package %s;\n", pkgName);
 			pw.println();
 
-			formatter.format("public class %s {", clsName);
+			formatter.format("public class %s implements IPropertyFactory {", clsName);
 			pw.println();
 
 			HashMap<TypeElement, List<VariableElement>> map =
@@ -71,26 +71,26 @@ public class PropertyAnnotationProcessor extends AbstractProcessor {
 				}
 			}
 
-			pw.println("	static public boolean hasProperty(CompilObject obj,\n" +
-					   "									  String property) {");
+			pw.println("    public boolean hasProperty(CompilObject obj,\n" +
+					   "                               String property) {");
 
 			for (TypeElement cls : map.keySet()) {
-				formatter.format("		  if (obj instanceof %s) {\n",
+				formatter.format("        if (obj instanceof %s) {\n",
 								 cls.getSimpleName());
 
 				List<VariableElement> list = map.get(cls);
 				for (VariableElement field : list) {
-					formatter.format("			  if (property.equals(\"%s\")) {\n",
+					formatter.format("            if (property.equals(\"%s\")) {\n",
 									 field.getSimpleName());
-					pw.println("				return true;");
-					pw.println("			}");
+					pw.println("                return true;");
+					pw.println("            }");
 				}
 
-				pw.println("		}");
+				pw.println("        }");
 			}
 
-			pw.println("		return false;");
-			pw.println("	}");
+			pw.println("        return false;");
+			pw.println("    }");
 
 			pw.println("}");
 			pw.println();

@@ -1,7 +1,7 @@
 grammar Grammar;
 
 document
-	:	statement*
+	:	(statement WS*)*
 	;
 
 statement
@@ -62,7 +62,7 @@ codeList
 
 code
 	:	codeExpression
-	|	~WS
+	|	~RIGHT_CODE_BRACE
 	;
 
 codeExpression

@@ -17,7 +17,7 @@ import org.compil.parser.template.GrammarParser;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class GrammarVisitorTest {
+public class GrammarCodeExpressionVisitorTest {
 	Document parseDocument(String document) {
 		ANTLRInputStream inputStream = new ANTLRInputStream(document);
 		ModelLexer lexer = new ModelLexer(inputStream);
@@ -47,42 +47,15 @@ public class GrammarVisitorTest {
 	}
 
 	@Test
-	public void sanity1Test() {
+	public void codeExpresionTest() {
 		Document document = parseDocument("structure foo {}");
 		assertNotNull(document);
 
 		Language cpp = new Language(ELanguage.Cpp);
-		String result = applyGrammer("", document, cpp);
-		assertEquals("", result);
-	}
-
-	@Test
-	public void codeTest() {
-		Document document = parseDocument("structure foo {}");
-		assertNotNull(document);
-
-		Language cpp = new Language(ELanguage.Cpp);
-		String result = applyGrammer("<? class Name {}?>", document, cpp);
-		assertEquals("class Name {}", result);
-	}
-
-	@Test
-	public void codeLanguageTest() {
-		Document document = parseDocument("structure foo {}");
-		assertNotNull(document);
-
-		Language cpp = new Language(ELanguage.Cpp);
-		String result = applyGrammer("<?cpp class Name {}?>", document, cpp);
-		assertEquals("class Name {}", result);
-	}
-
-	@Test
-	public void codeAnotherLanguageTest() {
-		Document document = parseDocument("structure foo {}");
-		assertNotNull(document);
-
-		Language cpp = new Language(ELanguage.Cpp);
-		String result = applyGrammer("<?java class Name {} ?>", document, cpp);
-		assertEquals("", result);
+		String result = applyGrammer(
+			"foreach .objects {\n" +
+			"<? class `.name` {}?>\n" +
+			"}\n", document, cpp);
+		assertEquals("class foo.name {}", result);
 	}
 }
