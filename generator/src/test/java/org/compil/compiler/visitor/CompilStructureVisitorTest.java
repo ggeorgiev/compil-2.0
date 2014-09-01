@@ -34,6 +34,6 @@ public class CompilStructureVisitorTest {
 	public void sanityTest() {
 		Structure structure = parseStructure("structure foo {}");
 		assertNotNull(structure);
-		assertEquals("foo", structure.getName());
+		assertEquals("foo", structure.getName().value);
 	}
 }

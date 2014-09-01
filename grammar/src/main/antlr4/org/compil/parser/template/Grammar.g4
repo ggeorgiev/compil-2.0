@@ -17,8 +17,12 @@ iterationStatement
 
 foreach
 	:	KW_FOREACH WS+
-		property WS*
+		objects WS*
 		statement
+	;
+	
+objects
+	:	DOT (IDENTIFIER | objects)
 	;
 
 selectionStatement

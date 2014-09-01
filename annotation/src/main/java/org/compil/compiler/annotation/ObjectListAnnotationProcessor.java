@@ -19,8 +19,8 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.tools.JavaFileObject;
 
-@SupportedAnnotationTypes("org.compil.compiler.annotation.Property")
-public class PropertyAnnotationProcessor extends AbstractProcessor {
+@SupportedAnnotationTypes("org.compil.compiler.annotation.ObjectList")
+public class ObjectListAnnotationProcessor extends AbstractProcessor {
 	
 	static String getGetterMethod(String field) {
 		return "get" + field.substring(0, 1).toUpperCase() + field.substring(1);
@@ -41,8 +41,7 @@ public class PropertyAnnotationProcessor extends AbstractProcessor {
 		Filer filer = env.getFiler();
 
 		String pkgName = "org.compil.compiler.model";
-		String pkgPropertyName = "org.compil.compiler.model.property.Property";
-		String clsName = "PropertyFactory";
+		String clsName = "ObjectListFactory";
 
 		try {
 			JavaFileObject javaFile = filer.createSourceFile(pkgName + "." + clsName,
@@ -53,6 +52,9 @@ public class PropertyAnnotationProcessor extends AbstractProcessor {
 			PrintWriter pw = new PrintWriter(writer);
 			Formatter formatter = new Formatter(pw);
 
+			formatter.format("package %s;\n", pkgName);
+			pw.println();
+			
 			HashMap<TypeElement, List<VariableElement>> map =
 					new HashMap<TypeElement, List<VariableElement>>();
 
@@ -70,10 +72,7 @@ public class PropertyAnnotationProcessor extends AbstractProcessor {
 				}
 			}
 
-			formatter.format("package %s;\n", pkgName);
-			pw.println();
-
-			formatter.format("import %s;\n", pkgPropertyName);
+			pw.println("import java.util.List;");
 			for (TypeElement cls : map.keySet())
 				formatter.format("import %s.%s;\n", pkgName, cls.getSimpleName());
 			pw.println();
@@ -81,8 +80,8 @@ public class PropertyAnnotationProcessor extends AbstractProcessor {
 			formatter.format("public class %s implements I%s {", clsName, clsName);
 			pw.println();
 
-			pw.println("    public boolean hasProperty(CompilObject obj,\n" +
-					   "                               String property) {");
+			pw.println("    public boolean hasObjectList(CompilObject obj,\n" +
+					   "                                 String list) {");
 
 			for (TypeElement cls : map.keySet()) {
 				formatter.format("        if (obj instanceof %s) {\n",
@@ -90,7 +89,7 @@ public class PropertyAnnotationProcessor extends AbstractProcessor {
 
 				List<VariableElement> list = map.get(cls);
 				for (VariableElement field : list) {
-					formatter.format("            if (property.equals(\"%s\")) {\n",
+					formatter.format("            if (list.equals(\"%s\")) {\n",
 									 field.getSimpleName());
 					pw.println("                return true;");
 					pw.println("            }");
@@ -101,10 +100,11 @@ public class PropertyAnnotationProcessor extends AbstractProcessor {
 
 			pw.println("        return false;");
 			pw.println("    }");
+
 			pw.println();
 
-			pw.println("    public Property getProperty(CompilObject obj,\n" +
-					   "                                String property) {");
+			pw.println("    public List<CompilObject> getObjectList(CompilObject obj,\n" +
+					   "                                            String list) {");
 
 			for (TypeElement cls : map.keySet()) {
 				formatter.format("        if (obj instanceof %s) {\n",
@@ -113,18 +113,22 @@ public class PropertyAnnotationProcessor extends AbstractProcessor {
 				List<VariableElement> list = map.get(cls);
 				for (VariableElement field : list) {
 					String getter = getGetterMethod(field.getSimpleName().toString());
-					formatter.format("            if (property.equals(\"%s\")) {\n",
+					formatter.format("            if (list.equals(\"%s\")) {\n",
 									 field.getSimpleName());
-					formatter.format("            return ((%s)obj).%s();\n",
+					formatter.format("                return ((%s)obj).%s();\n",
 							         cls.getSimpleName(), getter);
 					pw.println("            }");
 				}
 
 				pw.println("        }");
 			}
+			
+            pw.println("        throw new UnsupportedOperationException(obj.getClass().getSuperclass() +");
+            pw.println("                                               \" has no object list \" + list);");
 
-			pw.println("        return null;");
+
 			pw.println("    }");
+
 			pw.println("}");
 			pw.println();
 

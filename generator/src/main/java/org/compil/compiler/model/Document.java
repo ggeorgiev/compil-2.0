@@ -3,11 +3,11 @@ package org.compil.compiler.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.compil.compiler.annotation.Property;
+import org.compil.compiler.annotation.ObjectList;
 
 public class Document extends CompilObject {
 
-	@Property
+	@ObjectList
 	List<CompilObject> objects = new ArrayList<CompilObject>();
 
 	public void addObject(CompilObject obj) {
@@ -17,5 +17,4 @@ public class Document extends CompilObject {
 	public List<CompilObject> getObjects() {
 		return objects;
 	}
-
 }

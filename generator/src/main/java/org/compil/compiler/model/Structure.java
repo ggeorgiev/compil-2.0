@@ -1,20 +1,21 @@
 package org.compil.compiler.model;
 
 import org.compil.compiler.annotation.Property;
+import org.compil.compiler.model.property.NameProperty;
 
 public class Structure extends CompilObject {
 	@Property
-	private String name = null;
+	private NameProperty name = null;
 
-	public String getName() {
+	public NameProperty getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(NameProperty name) {
 		this.name = name;
 	}
 	
 	public String getBaseName() {
-		return getName();
+		return getName().value;
 	}
 }

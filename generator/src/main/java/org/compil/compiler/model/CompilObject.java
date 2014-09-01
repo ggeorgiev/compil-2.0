@@ -1,5 +1,7 @@
 package org.compil.compiler.model;
 
+import java.util.List;
+
 public class CompilObject {
 	
 	static private Character dot = '.'; 
@@ -34,5 +36,18 @@ public class CompilObject {
 		
 		fullname += getBaseName() + dot + name;
 		return fullname;
+	}
+	
+	public List<CompilObject> getObjectList(IObjectListFactory factory, String list) {
+		if (list.charAt(0) != dot) {
+			throw new IllegalArgumentException("object list must start with '.'");
+		}
+		
+		String name = list.substring(1);
+
+		if (list.charAt(1) == dot)
+			return getParent().getObjectList(factory, name);
+		
+		return factory.getObjectList(this, name);		
 	}
 }

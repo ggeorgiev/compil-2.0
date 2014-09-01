@@ -91,6 +91,7 @@
           				<configuration>
 				            <processors>
              					<!-- list of processors to use -->
+               					<processor>org.compil.compiler.annotation.ObjectListAnnotationProcessor</processor>
                					<processor>org.compil.compiler.annotation.PropertyAnnotationProcessor</processor>
             				</processors>
           				</configuration> 

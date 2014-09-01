@@ -6,7 +6,9 @@ import java.util.List;
 
 import org.compil.compiler.model.CompilObject;
 import org.compil.compiler.model.Document;
+import org.compil.compiler.model.IObjectListFactory;
 import org.compil.compiler.model.IPropertyFactory;
+import org.compil.compiler.model.ObjectListFactory;
 import org.compil.compiler.model.PropertyFactory;
 import org.compil.parser.template.GrammarBaseVisitor;
 import org.compil.parser.template.GrammarParser.BlockStatementItemListContext;
@@ -24,6 +26,7 @@ import org.compil.parser.template.GrammarParser.WhenContext;
 public class GrammarVisitorImpl extends GrammarBaseVisitor<StringBuffer> {
 
 	private IPropertyFactory propertyFactory = new PropertyFactory();
+	private IObjectListFactory objectListFactory = new ObjectListFactory();
 	
 	private Document document = null;
 	private Language language = null;
@@ -145,14 +148,14 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<StringBuffer> {
 	{
 		StringBuffer buffer = new StringBuffer();
 		
-		if (ctx.property() != null) {
-			String property = ctx.property().getText();
+		String objects = ctx.objects().getText();
 
-			List<CompilObject> objects = document.getObjects();
-			for (CompilObject object : objects) {
-				activeObject = object;
-				buffer.append(visitStatement(ctx.statement()));
-			}
+		List<CompilObject> objectList = 
+			activeObject.getObjectList(objectListFactory, objects);
+		
+		for (CompilObject object : objectList) {
+			activeObject = object;
+			buffer.append(visitStatement(ctx.statement()));
 		}
 		
 		return buffer;
