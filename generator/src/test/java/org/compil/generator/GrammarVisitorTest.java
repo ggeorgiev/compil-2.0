@@ -63,7 +63,7 @@ public class GrammarVisitorTest {
 
 		Language cpp = new Language(ELanguage.Cpp);
 		String result = applyGrammer("<? class Name {}?>", document, cpp);
-		assertEquals("class Name {}", result);
+		assertEquals("<?\nclass Name {}\n?>", result);
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class GrammarVisitorTest {
 
 		Language cpp = new Language(ELanguage.Cpp);
 		String result = applyGrammer("<?cpp class Name {}?>", document, cpp);
-		assertEquals("class Name {}", result);
+		assertEquals("<?\nclass Name {}\n?>", result);
 	}
 
 	@Test

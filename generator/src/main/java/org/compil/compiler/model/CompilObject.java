@@ -2,6 +2,8 @@ package org.compil.compiler.model;
 
 import java.util.List;
 
+import org.compil.compiler.model.property.Property;
+
 public class CompilObject {
 	
 	static private Character dot = '.'; 
@@ -15,14 +17,14 @@ public class CompilObject {
 												" objects has no base name");
 	}
 	
-	public String getPropertyName(IPropertyFactory propertyFactory, String text) {
-		if (text.charAt(0) != dot) {
+	public String getPropertyName(IPropertyFactory propertyFactory, String property) {
+		if (property.charAt(0) != dot) {
 			throw new IllegalArgumentException("property must start with '.'");
 		}
 		
-		String name = text.substring(1);
+		String name = property.substring(1);
 
-		if (text.charAt(1) == dot)
+		if (property.charAt(1) == dot)
 			return getParent().getPropertyName(propertyFactory, name);		
 		
 		if (!propertyFactory.hasProperty(this, name)) {
@@ -36,6 +38,19 @@ public class CompilObject {
 		
 		fullname += getBaseName() + dot + name;
 		return fullname;
+	}
+	
+	public Property getProperty(IPropertyFactory propertyFactory, String property) {
+		if (property.charAt(0) != dot) {
+			throw new IllegalArgumentException("property must start with '.'");
+		}
+		
+		String name = property.substring(1);
+
+		if (property.charAt(1) == dot)
+			return getParent().getProperty(propertyFactory, name);		
+		
+		return propertyFactory.getProperty(this, name);
 	}
 	
 	public List<CompilObject> getObjectList(IObjectListFactory factory, String list) {

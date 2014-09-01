@@ -1,8 +1,11 @@
 package org.compil.generator;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.compil.compiler.model.CompilObject;
 import org.compil.compiler.model.Document;
@@ -10,6 +13,8 @@ import org.compil.compiler.model.IObjectListFactory;
 import org.compil.compiler.model.IPropertyFactory;
 import org.compil.compiler.model.ObjectListFactory;
 import org.compil.compiler.model.PropertyFactory;
+import org.compil.compiler.model.property.NameProperty;
+import org.compil.compiler.model.property.Property;
 import org.compil.parser.template.GrammarBaseVisitor;
 import org.compil.parser.template.GrammarParser.BlockStatementItemListContext;
 import org.compil.parser.template.GrammarParser.CodeContext;
@@ -27,17 +32,18 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<StringBuffer> {
 
 	private IPropertyFactory propertyFactory = new PropertyFactory();
 	private IObjectListFactory objectListFactory = new ObjectListFactory();
-	
+
 	private Document document = null;
 	private Language language = null;
 
 	CompilObject activeObject = null;
 
 	Deque<CompilObject> activeObjects = null;
+	
+	Map<String, Property> properties = new HashMap<String, Property>();
 
 	public GrammarVisitorImpl(Document document,
-							  Language language)
-	{
+							  Language language) {
 		this.document = document;
 		this.language = language;
 
@@ -57,7 +63,24 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<StringBuffer> {
 			buffer.append(visitStatement(statement));
 		}
 
-		return buffer;
+		StringBuffer result = new StringBuffer();
+		
+		for (String key : properties.keySet()) {
+			Property property = properties.get(key);
+			if (property instanceof NameProperty) {
+				NameProperty name = (NameProperty)property;
+				result.append("name " + key + " {\n");
+				result.append("    " + name.value + "\n");
+				result.append("}\n");
+			}
+		}
+		
+		if (buffer.length() > 0) {		
+			result.append("<?\n");
+			result.append(buffer);
+			result.append("\n?>");
+		}
+		return result;
 	}
 
 	@Override
@@ -79,14 +102,15 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<StringBuffer> {
 	@Override
 	public StringBuffer visitCodeList(CodeListContext ctx) {
 		StringBuffer buffer = new StringBuffer();
-		if (ctx.codeList() != null) {
-			buffer.append(visitCodeList(ctx.codeList()));
-		}
-		if (ctx.codeWhitespace() != null) {
-			buffer.append(ctx.codeWhitespace().getText());
-		}
-		if (ctx.code() != null) {
-			buffer.append(visitCode(ctx.code()));
+		
+		while (ctx != null) {
+			if (ctx.code() != null) {
+				buffer.append(visitCode(ctx.code()));
+			}
+			if (ctx.codeWhitespace() != null) {
+				buffer.append(ctx.codeWhitespace().getText());
+			}
+			ctx = ctx.codeList();
 		}
 		return buffer;
 	}
@@ -98,11 +122,12 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<StringBuffer> {
 
 		return new StringBuffer(ctx.getText());
 	}
-	
+
 	@Override
 	public StringBuffer visitProperty(PropertyContext ctx) {
-		String property = ctx.getText();
-		String name = activeObject.getPropertyName(propertyFactory, property);
+		Property property = activeObject.getProperty(propertyFactory, ctx.getText());
+		String name = activeObject.getPropertyName(propertyFactory, ctx.getText());
+		properties.put(name, property);
 		return new StringBuffer(name);
 	}
 
@@ -116,8 +141,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<StringBuffer> {
 	}
 
 	@Override
-	public StringBuffer visitCompoundStatement(CompoundStatementContext ctx)
-	{
+	public StringBuffer visitCompoundStatement(CompoundStatementContext ctx) {
 		StringBuffer buffer = new StringBuffer();
 
 		BlockStatementItemListContext bsilc = ctx.blockStatementItemList();
@@ -131,8 +155,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<StringBuffer> {
 	}
 
 	@Override
-	public StringBuffer visitWhen(WhenContext ctx)
-	{
+	public StringBuffer visitWhen(WhenContext ctx) {
 		try {
 			Class<?> type = Class.forName(ctx.getText());
 			if (!activeObject.getClass().isInstance(type))
@@ -142,10 +165,9 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<StringBuffer> {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	@Override
-	public StringBuffer visitForeach(ForeachContext ctx)
-	{
+	public StringBuffer visitForeach(ForeachContext ctx) {
 		StringBuffer buffer = new StringBuffer();
 		
 		String objects = ctx.objects().getText();

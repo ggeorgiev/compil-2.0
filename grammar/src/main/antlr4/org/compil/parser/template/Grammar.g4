@@ -36,9 +36,9 @@ when
 	;
 
 blockStatementItemList
-	:	statement
-	|	blockStatementItemList WS*
+	:	blockStatementItemList WS*
 		statement
+	|	statement
 	;
 
 compoundStatement
@@ -59,9 +59,9 @@ language
 	;
 
 codeList
-	:	code
-	|	codeList codeWhitespace?
-		code
+	:	code codeWhitespace?
+		codeList
+	|	code
 	;
 
 code

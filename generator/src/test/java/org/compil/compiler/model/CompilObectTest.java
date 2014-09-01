@@ -2,6 +2,7 @@ package org.compil.compiler.model;
 
 import static org.testng.AssertJUnit.assertEquals;
 
+import org.compil.compiler.model.property.Property;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -16,6 +17,7 @@ public class CompilObectTest {
 	}
 	
 	class MyPropertyFactory implements IPropertyFactory {
+		@Override
 	    public boolean hasProperty(CompilObject obj,
 	                               String property){
 	        if (obj instanceof MyCompilObject) {
@@ -25,6 +27,11 @@ public class CompilObectTest {
 	        }
 	        return false;
 	    }
+
+		@Override
+		public Property getProperty(CompilObject obj, String property) {
+			return null;
+		}
 	}
 	
 	@BeforeClass
