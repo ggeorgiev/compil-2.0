@@ -81,50 +81,50 @@ public class PropertyAnnotationProcessor extends AbstractProcessor {
 			formatter.format("public class %s implements I%s {", clsName, clsName);
 			pw.println();
 
-			pw.println("    public boolean hasProperty(CompilObject obj,\n" +
-					   "                               String property) {");
+			pw.println("	public boolean hasProperty(CompilObject obj,\n" +
+					   "							   String property) {");
 
 			for (TypeElement cls : map.keySet()) {
-				formatter.format("        if (obj instanceof %s) {\n",
+				formatter.format("		  if (obj instanceof %s) {\n",
 								 cls.getSimpleName());
 
 				List<VariableElement> list = map.get(cls);
 				for (VariableElement field : list) {
-					formatter.format("            if (property.equals(\"%s\")) {\n",
+					formatter.format("			  if (property.equals(\"%s\")) {\n",
 									 field.getSimpleName());
-					pw.println("                return true;");
-					pw.println("            }");
+					pw.println("				return true;");
+					pw.println("			}");
 				}
 
-				pw.println("        }");
+				pw.println("		}");
 			}
 
-			pw.println("        return false;");
-			pw.println("    }");
+			pw.println("		return false;");
+			pw.println("	}");
 			pw.println();
 
-			pw.println("    public Property getProperty(CompilObject obj,\n" +
-					   "                                String property) {");
+			pw.println("	public Property getProperty(CompilObject obj,\n" +
+					   "								String property) {");
 
 			for (TypeElement cls : map.keySet()) {
-				formatter.format("        if (obj instanceof %s) {\n",
+				formatter.format("		  if (obj instanceof %s) {\n",
 								 cls.getSimpleName());
 
 				List<VariableElement> list = map.get(cls);
 				for (VariableElement field : list) {
 					String getter = getGetterMethod(field.getSimpleName().toString());
-					formatter.format("            if (property.equals(\"%s\")) {\n",
+					formatter.format("			  if (property.equals(\"%s\")) {\n",
 									 field.getSimpleName());
-					formatter.format("            return ((%s)obj).%s();\n",
-							         cls.getSimpleName(), getter);
-					pw.println("            }");
+					formatter.format("			  return ((%s)obj).%s();\n",
+									 cls.getSimpleName(), getter);
+					pw.println("			}");
 				}
 
-				pw.println("        }");
+				pw.println("		}");
 			}
 
-			pw.println("        return null;");
-			pw.println("    }");
+			pw.println("		return null;");
+			pw.println("	}");
 			pw.println("}");
 			pw.println();
 

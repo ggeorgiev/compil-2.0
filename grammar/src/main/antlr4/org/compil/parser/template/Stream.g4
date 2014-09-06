@@ -35,12 +35,12 @@ variable
 	:	CONSTANT_IDENTIFIER
 	;
 
-SEMICOLON:           ';';
-COLON:               ':';
-FS_DELIMITER:        '/';
-LEFT_BRACE:          '{';
-RIGHT_BRACE:         '}';
-SERIALIZE_BRACKET:   '<';
+SEMICOLON:			 ';';
+COLON:				 ':';
+FS_DELIMITER:		 '/';
+LEFT_BRACE:			 '{';
+RIGHT_BRACE:		 '}';
+SERIALIZE_BRACKET:	 '<';
 
 SERIALIZE_LINE
 	:	EOL SERIALIZE_BRACKET ~[\n\r]*

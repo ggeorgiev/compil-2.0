@@ -56,6 +56,6 @@ public class GrammarCodeExpressionVisitorTest {
 			"foreach .objects {\n" +
 			"<? class `.name` {}?>\n" +
 			"}\n", document, cpp);
-		assertEquals("name foo.name {\n    foo\n}\n<?\nclass foo.name {}\n?>", result);
+		assertEquals("name foo.name {\n	   foo\n}\n<?\nclass foo.name {}\n?>", result);
 	}
 }

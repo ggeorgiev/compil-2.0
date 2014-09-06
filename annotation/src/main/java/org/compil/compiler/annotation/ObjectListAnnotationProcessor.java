@@ -80,54 +80,54 @@ public class ObjectListAnnotationProcessor extends AbstractProcessor {
 			formatter.format("public class %s implements I%s {", clsName, clsName);
 			pw.println();
 
-			pw.println("    public boolean hasObjectList(CompilObject obj,\n" +
-					   "                                 String list) {");
+			pw.println("	public boolean hasObjectList(CompilObject obj,\n" +
+					   "								 String list) {");
 
 			for (TypeElement cls : map.keySet()) {
-				formatter.format("        if (obj instanceof %s) {\n",
+				formatter.format("		  if (obj instanceof %s) {\n",
 								 cls.getSimpleName());
 
 				List<VariableElement> list = map.get(cls);
 				for (VariableElement field : list) {
-					formatter.format("            if (list.equals(\"%s\")) {\n",
+					formatter.format("			  if (list.equals(\"%s\")) {\n",
 									 field.getSimpleName());
-					pw.println("                return true;");
-					pw.println("            }");
+					pw.println("				return true;");
+					pw.println("			}");
 				}
 
-				pw.println("        }");
+				pw.println("		}");
 			}
 
-			pw.println("        return false;");
-			pw.println("    }");
+			pw.println("		return false;");
+			pw.println("	}");
 
 			pw.println();
 
-			pw.println("    public List<CompilObject> getObjectList(CompilObject obj,\n" +
-					   "                                            String list) {");
+			pw.println("	public List<CompilObject> getObjectList(CompilObject obj,\n" +
+					   "											String list) {");
 
 			for (TypeElement cls : map.keySet()) {
-				formatter.format("        if (obj instanceof %s) {\n",
+				formatter.format("		  if (obj instanceof %s) {\n",
 								 cls.getSimpleName());
 
 				List<VariableElement> list = map.get(cls);
 				for (VariableElement field : list) {
 					String getter = getGetterMethod(field.getSimpleName().toString());
-					formatter.format("            if (list.equals(\"%s\")) {\n",
+					formatter.format("			  if (list.equals(\"%s\")) {\n",
 									 field.getSimpleName());
-					formatter.format("                return ((%s)obj).%s();\n",
-							         cls.getSimpleName(), getter);
-					pw.println("            }");
+					formatter.format("				  return ((%s)obj).%s();\n",
+									 cls.getSimpleName(), getter);
+					pw.println("			}");
 				}
 
-				pw.println("        }");
+				pw.println("		}");
 			}
 			
-            pw.println("        throw new UnsupportedOperationException(obj.getClass().getSuperclass() +");
-            pw.println("                                               \" has no object list \" + list);");
+			pw.println("		throw new UnsupportedOperationException(obj.getClass().getSuperclass() +");
+			pw.println("											   \" has no object list \" + list);");
 
 
-			pw.println("    }");
+			pw.println("	}");
 
 			pw.println("}");
 			pw.println();

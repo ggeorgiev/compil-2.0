@@ -18,15 +18,15 @@ public class CompilObectTest {
 	
 	class MyPropertyFactory implements IPropertyFactory {
 		@Override
-	    public boolean hasProperty(CompilObject obj,
-	                               String property){
-	        if (obj instanceof MyCompilObject) {
-	            if (property.equals("foo")) {
-	                return true;
-	            }
-	        }
-	        return false;
-	    }
+		public boolean hasProperty(CompilObject obj,
+								   String property){
+			if (obj instanceof MyCompilObject) {
+				if (property.equals("foo")) {
+					return true;
+				}
+			}
+			return false;
+		}
 
 		@Override
 		public Property getProperty(CompilObject obj, String property) {

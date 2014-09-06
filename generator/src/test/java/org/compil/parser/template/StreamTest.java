@@ -61,7 +61,7 @@ public class StreamTest {
 	@Test
 	public void streamTest() {
 		String dump = streamDump("stream foo { path: VAR/file.txt; }");
-		assertEquals("stream foo {\n    path: VAR/file.txt;\n}\n", dump);
+		assertEquals("stream foo {\n	path: VAR/file.txt;\n}\n", dump);
 	}
 
 	@Test

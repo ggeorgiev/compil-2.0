@@ -1,7 +1,6 @@
 package org.compil.generator;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
@@ -70,7 +69,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<StringBuffer> {
 			if (property instanceof NameProperty) {
 				NameProperty name = (NameProperty)property;
 				result.append("name " + key + " {\n");
-				result.append("    " + name.value + "\n");
+				result.append("	   " + name.value + "\n");
 				result.append("}\n");
 			}
 		}
