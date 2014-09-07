@@ -2,7 +2,6 @@ package org.compil.compiler.visitor;
 
 import org.compil.compiler.model.Structure;
 import org.compil.compiler.model.property.NameProperty;
-import org.compil.compiler.model.property.Property;
 import org.compil.parser.idl.compil.ModelBaseVisitor;
 import org.compil.parser.idl.compil.ModelParser;
 

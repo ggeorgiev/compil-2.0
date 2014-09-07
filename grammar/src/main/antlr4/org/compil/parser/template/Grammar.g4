@@ -87,18 +87,20 @@ type
 	:	IDENTIFIER
 	;
 
-DOT:					'.';
-LEFT_BRACE:				'{';
-RIGHT_BRACE:			'}';
-LEFT_CODE_BRACE:		'<?';
-RIGHT_CODE_BRACE:		'?>';
-GRAVE_ACCENT:			'`';
+DOT:                 '.';
+LEFT_BRACE:          '{';
+RIGHT_BRACE:         '}';
 
-KW_FOREACH:				'foreach';
-KW_WHEN:				'when';
+LEFT_CODE_BRACE:     '<~';
+RIGHT_CODE_BRACE:    '~>';
 
-KW_LANGUAGE_CPP:		'cpp';
-KW_LANGUAGE_JAVA:		'java';
+GRAVE_ACCENT:        '`';
+
+KW_FOREACH:          'foreach';
+KW_WHEN:             'when';
+
+KW_LANGUAGE_CPP:     'cpp';
+KW_LANGUAGE_JAVA:    'java';
 
 IDENTIFIER
 	:	LETTER (LETTER|ID_DIGIT)*

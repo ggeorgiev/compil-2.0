@@ -1,12 +1,12 @@
 package org.compil.generator;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.compil.compiler.model.CompilObject;
 import org.compil.compiler.model.Document;
 import org.compil.compiler.model.IObjectListFactory;
@@ -27,8 +27,12 @@ import org.compil.parser.template.GrammarParser.ForeachContext;
 import org.compil.parser.template.GrammarParser.PropertyContext;
 import org.compil.parser.template.GrammarParser.StatementContext;
 import org.compil.parser.template.GrammarParser.WhenContext;
+import org.compil.parser.template.language.Shared;
 
 public class GrammarVisitorImpl extends GrammarBaseVisitor<StringBuffer> {
+	
+	private String leftLanguageBrace = StringUtils.strip(Shared.tokenNames[Shared.LEFT_CODE_BRACE], "'");
+	private String rightLanguageBrace = StringUtils.strip(Shared.tokenNames[Shared.RIGHT_CODE_BRACE], "'");
 
 	private IPropertyFactory propertyFactory = new PropertyFactory();
 	private IObjectListFactory objectListFactory = new ObjectListFactory();
@@ -75,10 +79,12 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<StringBuffer> {
 			}
 		}
 		
-		if (buffer.length() > 0) {		
-			result.append("<?\n");
+		if (buffer.length() > 0) {
+			result.append(leftLanguageBrace);
+			result.append("\n");
 			result.append(buffer);
-			result.append("\n?>");
+			result.append("\n");
+			result.append(rightLanguageBrace);
 		}
 		return result;
 	}
@@ -128,7 +134,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<StringBuffer> {
 		Property property = activeObject.getProperty(propertyFactory, ctx.getText());
 		String name = activeObject.getPropertyName(propertyFactory, ctx.getText());
 		properties.put(name, property);
-		return new StringBuffer(name);
+		return new StringBuffer("`" + name + "`");
 	}
 
 	@Override
