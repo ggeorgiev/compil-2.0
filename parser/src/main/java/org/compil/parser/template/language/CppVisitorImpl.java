@@ -11,7 +11,6 @@ public class CppVisitorImpl extends CppBaseVisitor<String> {
 	private String leftLanguageBrace = StringUtils.strip(Shared.tokenNames[Shared.LEFT_CODE_BRACE], "'");
 	private String rightLanguageBrace = StringUtils.strip(Shared.tokenNames[Shared.RIGHT_CODE_BRACE], "'");
 
-
 	@Override
 	public String visitDocument(DocumentContext ctx) {
 		String result = "";

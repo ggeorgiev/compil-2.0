@@ -37,7 +37,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<StringBuffer> {
 	private IPropertyFactory propertyFactory = new PropertyFactory();
 	private IObjectListFactory objectListFactory = new ObjectListFactory();
 
-	private Document document = null;
+	//private Document document = null;
 	private Language language = null;
 
 	CompilObject activeObject = null;
@@ -48,7 +48,7 @@ public class GrammarVisitorImpl extends GrammarBaseVisitor<StringBuffer> {
 
 	public GrammarVisitorImpl(Document document,
 							  Language language) {
-		this.document = document;
+		//this.document = document;
 		this.language = language;
 
 		activeObject = document;

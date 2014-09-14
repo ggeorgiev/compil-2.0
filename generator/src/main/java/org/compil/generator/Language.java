@@ -1,7 +1,7 @@
 package org.compil.generator;
 
 public class Language {
-	enum ELanguage {
+	public enum ELanguage {
 		Undefined,
 		Cpp,
 		Java
@@ -9,11 +9,11 @@ public class Language {
 
 	private ELanguage value = ELanguage.Undefined;
 
-	Language(ELanguage value) {
+	public Language(ELanguage value) {
 		this.value = value;
 	}
 
-	Language(String name) {
+	public Language(String name) {
 		if (name.equalsIgnoreCase("cpp")) {
 			value = ELanguage.Cpp;
 		}
@@ -25,7 +25,7 @@ public class Language {
 		}
 	}
 
-	boolean equals(Language language) {
+	public boolean equals(Language language) {
 		return value == language.value;
 	}
 
