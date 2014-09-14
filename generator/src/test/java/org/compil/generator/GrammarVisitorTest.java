@@ -62,8 +62,8 @@ public class GrammarVisitorTest {
 		assertNotNull(document);
 
 		Language cpp = new Language(ELanguage.Cpp);
-		String result = applyGrammer("<? class Name {}?>", document, cpp);
-		assertEquals("<?\nclass Name {}\n?>", result);
+		String result = applyGrammer("<~ class Name {}~>", document, cpp);
+		assertEquals("<~\nclass Name {}\n~>", result);
 	}
 
 	@Test
@@ -72,8 +72,8 @@ public class GrammarVisitorTest {
 		assertNotNull(document);
 
 		Language cpp = new Language(ELanguage.Cpp);
-		String result = applyGrammer("<?cpp class Name {}?>", document, cpp);
-		assertEquals("<?\nclass Name {}\n?>", result);
+		String result = applyGrammer("<~cpp class Name {}~>", document, cpp);
+		assertEquals("<~\nclass Name {}\n~>", result);
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class GrammarVisitorTest {
 		assertNotNull(document);
 
 		Language cpp = new Language(ELanguage.Cpp);
-		String result = applyGrammer("<?java class Name {} ?>", document, cpp);
+		String result = applyGrammer("<~java class Name {} ~>", document, cpp);
 		assertEquals("", result);
 	}
 }

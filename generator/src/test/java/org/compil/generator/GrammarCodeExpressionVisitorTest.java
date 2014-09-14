@@ -54,8 +54,8 @@ public class GrammarCodeExpressionVisitorTest {
 		Language cpp = new Language(ELanguage.Cpp);
 		String result = applyGrammer(
 			"foreach .objects {\n" +
-			"<? class `.name` {}?>\n" +
+			"<~ class `.name` {}~>\n" +
 			"}\n", document, cpp);
-		assertEquals("name foo.name {\n	   foo\n}\n<?\nclass foo.name {}\n?>", result);
+		assertEquals("name foo.name {\n	   foo\n}\n<~\nclass `foo.name` {}\n~>", result);
 	}
 }

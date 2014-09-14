@@ -6,7 +6,7 @@
     <artifactId>generator</artifactId>
     <version>2.0.0-SNAPSHOT</version>
     <name>Compil-Generator</name>
-    
+
     <parent>
         <groupId>org.compil</groupId>
         <artifactId>all</artifactId>
@@ -26,12 +26,20 @@
        		<version>2.0.0-SNAPSHOT</version>
 		</dependency>
 
+	    <dependency>
+	    	<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.3.2</version>
+            <scope>compile</scope>
+	    </dependency>
+
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
             <version>4.0</version>
             <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>org.eclipse.jgit</groupId>
             <artifactId>org.eclipse.jgit</artifactId>
@@ -71,7 +79,7 @@
 				<groupId>org.bsc.maven</groupId>
       			<artifactId>maven-processor-plugin</artifactId>
       			<version>2.2.4</version>
-      			
+
 			    <dependencies>
         			<dependency>
             			<groupId>org.compil</groupId>
@@ -80,7 +88,7 @@
             			<type>pom</type>
         			</dependency>
 			    </dependencies>
-    
+
       			<executions>
        				<execution>
          				<id>process</id>
@@ -94,7 +102,7 @@
                					<processor>org.compil.compiler.annotation.ObjectListAnnotationProcessor</processor>
                					<processor>org.compil.compiler.annotation.PropertyAnnotationProcessor</processor>
             				</processors>
-          				</configuration> 
+          				</configuration>
         			</execution>
       			</executions>
     		</plugin>

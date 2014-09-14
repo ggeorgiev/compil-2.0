@@ -1,5 +1,8 @@
 lexer grammar Shared;
 
+LEFT_CODE_BRACE:	 '<~';
+RIGHT_CODE_BRACE:	 '~>';
+
 PROPERTY
 	:	DOT+ IDENTIFIER
 	;
