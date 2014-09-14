@@ -1,13 +1,14 @@
 package org.compil.parser.template.language;
 
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
 public class CppTest {
-	String foreachDump(String input) {
+	String documentDump(String input) {
 		ANTLRInputStream inputStream = new ANTLRInputStream(input);
 		CppLexer lexer = new CppLexer(inputStream);
 		CommonTokenStream stream = new CommonTokenStream(lexer);
@@ -24,5 +25,7 @@ public class CppTest {
 
 	@Test
 	public void sanityTest() {
+		String dump = documentDump("<~class A {}~>");
+		AssertJUnit.assertEquals("<~class A\n{\n}\n~>", dump);
 	}
 }

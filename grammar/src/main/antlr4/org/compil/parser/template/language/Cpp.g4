@@ -3,13 +3,18 @@ grammar Cpp;
 import Shared;
 
 document
-	:	(~LEFT_CODE_BRACE)?
+	:	definition*
 		(LEFT_CODE_BRACE
-		statment*
+		statement*
 		RIGHT_CODE_BRACE)?
 	;
 
-statment
+definition
+	: (~LEFT_CODE_BRACE)
+	;
+
+
+statement
 	:	cppClass
 	;
 
