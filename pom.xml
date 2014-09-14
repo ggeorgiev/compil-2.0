@@ -11,6 +11,7 @@
     <modules>
         <module>annotation</module>
         <module>grammar</module>
+        <module>parser</module>
         <module>generator</module>
     </modules>
 

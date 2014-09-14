@@ -7,15 +7,15 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class CompilObectTest {
-	
+
 	class MyCompilObject extends CompilObject {
 		String foo = "";
-		
+
 		public String getBaseName() {
 			return "base";
 		}
 	}
-	
+
 	class MyPropertyFactory implements IPropertyFactory {
 		@Override
 		public boolean hasProperty(CompilObject obj,
@@ -33,7 +33,7 @@ public class CompilObectTest {
 			return null;
 		}
 	}
-	
+
 	@BeforeClass
 	public void setUp() {
 	}
@@ -42,7 +42,7 @@ public class CompilObectTest {
 	public void propertyNameTest() {
 		MyCompilObject object = new MyCompilObject();
 		IPropertyFactory propertyFactory = new MyPropertyFactory();
-		
+
 		assertEquals("base.foo", object.getPropertyName(propertyFactory, ".foo"));
 	}
 }
